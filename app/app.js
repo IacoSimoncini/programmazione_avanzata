@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 require("./routes/user.route")(app);
+require("./routes/parking.route")(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
