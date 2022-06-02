@@ -32,20 +32,32 @@ exports.parkingZone = async (req, res) => {
         var a = Math.sin(Lat / 2) * Math.sin(Lat / 2) + Math.cos(toRad(lat2)) * Math.cos(toRad(lat1)) * Math.sin(Long / 2) * Math.sin(Long / 2);
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         console.log(6371 * c);
-        return 6371 * c;
+        var d = 6371 * c; 
+        if (d < 50) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     const position = {
         lat: req.body.lat,
         long: req.body.long
     };
+
+    var listPark = [];
     
     const parkings = await Parking.findAll()
         .then(parking => { 
-            parking.map(x => {Harvesine(Number(x.lat), Number(position.lat), Number(x.long), Number(position.long))});
-            res.status(200).send({
-                message: "ok"
+            parking.map(x => {
+                if (Harvesine(Number(x.lat), Number(position.lat), Number(x.long), Number(position.long))) {
+                    listPark.push({
+                        lat: x.lat,
+                        long: x.long
+                    });
+                }
             });
+            res.status(200).send(listPark);
         })
         .catch(err => {
             res.status(500).send({

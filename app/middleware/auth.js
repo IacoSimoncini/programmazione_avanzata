@@ -6,7 +6,7 @@ exports.verToken = (req, res, next) => {
         return res.status(403).send("Token is missing.");
     }
     try {
-        const decoded = jwt.verify(token, 'SECRET_KEY');
+        const decoded = jwt.verify(token, 'SECRET_KEY');        // process.env.SECRET_KEY
         req.user = decoded;
         console.log("DECODED: ", decoded);
     } catch (err) {

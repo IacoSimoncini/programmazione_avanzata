@@ -19,3 +19,24 @@ exports.create = (req, res) => {
             });
         });
 };
+
+exports.credit = (req, res) => {
+    Users.findAll({
+        where: {
+            email: req.user.email
+        }
+    }).then(data => {
+        if (data) {
+            res.status(200).send(data);
+        } else {
+            res.status(404).send({
+                message: "Not found."
+            })
+        }  
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || "Internal server error."
+        });
+    });
+};
