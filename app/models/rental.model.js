@@ -6,8 +6,14 @@ module.exports = (sequelize, Sequelize) => {
       payment: {
         type: Sequelize.FLOAT
       },
-      time: {
+      start: {
         type: Sequelize.FLOAT(8)
+      },
+      end: {
+        type: Sequelize.FLOAT(8)
+      },
+      id_vehicle: {
+        type: Sequelize.INTEGER
       }
     });
     return Rental;

@@ -7,7 +7,8 @@ exports.create = (req, res) => {
         email: req.body.email,
         credit: req.body.credit,
         lat: req.body.lat,
-        long: req.body.long
+        long: req.body.long,
+        role: "user"
     };
     Users.create(user)
         .then(data => {
@@ -40,3 +41,29 @@ exports.credit = (req, res) => {
         });
     });
 };
+
+exports.updateCredit = async (req, res) => {
+    await Users.update(
+        {
+            credit: req.body.credit
+        },
+        {
+            where: { email: req.body.email }
+        }
+    ).then(data => {
+        if (data) {
+            res.status(200).send({
+                message: "Credit updated."
+            });
+        } else {
+            res.status(404).send({
+                message: "Not found."
+            })
+        }
+    })
+    .catch (err => {
+        res.status(500).send({
+            message: err.message || "Internal server error."
+        });
+    });
+}

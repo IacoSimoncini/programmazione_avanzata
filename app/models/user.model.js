@@ -11,6 +11,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       long: {
         type: Sequelize.FLOAT(8)
+      },
+      role: {
+        type: Sequelize.STRING
       }
     });
     return User;
