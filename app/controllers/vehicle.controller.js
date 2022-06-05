@@ -60,8 +60,9 @@ exports.sortVehicles=async(req,res)=>{
     for(var i=0; i<vehicles.length; i++){
         var dist = Harvesine(req.params.lat,i.lat,req.params.long,i.long);
         vehicles[i]['distance'] = dist;
+        //console.log("Latitudine elemento",i,": ",i.lat, "Longitudine elemento",i,": ",i.long)
     }
-    //sort/-61.82858/151.50799
+    //sort/4.88350/-81.84767
     function compare(a,b) {
         if (a.distance < b.distance)
            return -1;
@@ -69,8 +70,8 @@ exports.sortVehicles=async(req,res)=>{
           return 1;
         return 0;
       }
-      vehicles.sort(compare)        
-      .then(data => {
+      sorted_vehicles=Promise.resolve(vehicles.sort(compare));   
+      sorted_vehicles.then(data => {
         res.status(200).send(data);
     })
     .catch(err => {
