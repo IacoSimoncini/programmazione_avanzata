@@ -32,8 +32,8 @@ exports.parkingZone = async (req, res) => {
         var a = Math.sin(Lat / 2) * Math.sin(Lat / 2) + Math.cos(toRad(lat2)) * Math.cos(toRad(lat1)) * Math.sin(Long / 2) * Math.sin(Long / 2);
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         console.log(6371 * c);
-        var d = 6371 * c; 
-        if (d < 50) {
+        var d = 6371 * c; //kilometers
+        if (d/1000 < 50) {
             return true;
         } else {
             return false;
