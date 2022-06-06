@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 require("./routes/user.route")(app);
 require("./routes/parking.route")(app);
 require("./routes/vehicle.route")(app);
+require("./routes/rental.route")(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -12,7 +12,10 @@ exports.checkHeader = (req, res, next) => {
         const decoded = jwt.verify(authHeader, 'SECRET_KEY');        // process.env.SECRET_KEY
         req.user = decoded;
     } catch (err) {
-        return res.status(401).send("Invalid Token.")        
+        return res.status(401).send({
+            message: "Invalid Token.",
+            error: err
+        })        
     }
     return next();
 };
