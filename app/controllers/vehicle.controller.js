@@ -41,8 +41,8 @@ exports.listAvailable = async (req, res) => {
 };
 
 exports.sortVehicles=async(req,res)=>{
-<<<<<<< HEAD
     var vehicles = [];
+    var list_vehicles=[];
     if (req.body.type) {
         vehicles = await Vehicles.findAll({
             where: {
@@ -53,14 +53,7 @@ exports.sortVehicles=async(req,res)=>{
         vehicles = await Vehicles.findAll();
     }
     for(var i = 0; i < vehicles.length; i++){
-        var dist = utils.Harvesine(req.user.lat, i.lat, req.user.long, i.long);
-=======
-
-    const vehicles = await Vehicles.findAll()
-    const list_vehicles=[];
-    for(var i=0; i<vehicles.length; i++){
-        var dist = Harvesine(req.user.lat,vehicles[i].lat, req.user.long,vehicles[i].long);
->>>>>>> 4474e012dab6c26f178fa5f8521d56ac22a880ff
+        var dist = utils.Harvesine(req.user.lat,vehicles[i].lat, req.user.long,vehicles[i].long);
         vehicles[i]['distance'] = dist;
         list_vehicles.push(vehicles[i]);
     }
@@ -72,7 +65,8 @@ exports.sortVehicles=async(req,res)=>{
           return 1;
         return 0;
       }
-      list_vehicles.sort(compare).then(data => {
+      sorted_vehicles = Promise.resolve(list_vehicles.sort(compare));
+      sorted_vehicles.then(data => {
         res.status(200).send(data);
     })
     .catch(err => {
