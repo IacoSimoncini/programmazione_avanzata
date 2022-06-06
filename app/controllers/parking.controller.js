@@ -1,6 +1,7 @@
 const db = require("../models");
 const Parking = db.parking;
 const Op = db.Sequelize.Op;
+const utils = require('../utils/utils.js')
 
 exports.create = (req, res) => {
     const parking = {
@@ -19,26 +20,6 @@ exports.create = (req, res) => {
 };
 
 exports.parkingZone = async (req, res) => {
-    
-    function toRad(x) {
-        return x * Math.PI / 180;
-    }
-
-    function Harvesine(lat1, lat2, long1, long2) {
-        var x1 = lat1 - lat2;
-        var x2 = long2 - long1;
-        var Lat = toRad(x1);
-        var Long = toRad(x2);
-        var a = Math.sin(Lat / 2) * Math.sin(Lat / 2) + Math.cos(toRad(lat2)) * Math.cos(toRad(lat1)) * Math.sin(Long / 2) * Math.sin(Long / 2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        console.log(6371 * c);
-        var d = 6371 * c; //kilometers
-        if (d/1000 < 50) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     const position = {
         lat: req.body.lat,
@@ -50,7 +31,8 @@ exports.parkingZone = async (req, res) => {
     const parkings = await Parking.findAll()
         .then(parking => { 
             parking.map(x => {
-                if (Harvesine(Number(x.lat), Number(position.lat), Number(x.long), Number(position.long))) {
+                let d = utils.Harvesine(Number(x.lat), Number(position.lat), Number(x.long), Number(position.long));
+                if (d < 50.0) {
                     listPark.push({
                         lat: x.lat,
                         long: x.long

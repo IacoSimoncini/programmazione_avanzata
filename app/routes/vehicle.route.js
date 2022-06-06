@@ -7,6 +7,6 @@ module.exports = app => {
 
     router.post("/", vehicleController.create);
     router.get("/filter/:type/", vehicleController.listAvailable);
-    router.get("/sort/:lat/:long", vehicleController.sortVehicles);
+    router.get("/sort", [auth.checkHeader], vehicleController.sortVehicles);
     app.use('/api/vehicle', router); 
 }
