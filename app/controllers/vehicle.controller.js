@@ -41,8 +41,16 @@ exports.listAvailable = async (req, res) => {
 };
 
 exports.sortVehicles=async(req,res)=>{
-
-    const vehicles = await Vehicles.findAll()
+    var vehicles = [];
+    if (req.body.type) {
+        vehicles = await Vehicles.findAll({
+            where: {
+                type: req.body.type
+            }
+        });
+    } else {
+        vehicles = await Vehicles.findAll();
+    }
     for(var i = 0; i < vehicles.length; i++){
         var dist = utils.Harvesine(req.user.lat, i.lat, req.user.long, i.long);
         vehicles[i]['distance'] = dist;
