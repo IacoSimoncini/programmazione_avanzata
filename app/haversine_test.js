@@ -28,6 +28,46 @@ vehicles=[
         "nol": true,
         "createdAt": "2013-11-03T11:00:00.000Z",
         "updatedAt": "2013-11-03T11:00:00.000Z"
+    },
+    {
+        "id": 4,
+        "code": 4,
+        "type": "byke",
+        "lat": -82.27428,
+        "long": -45.53882,
+        "nol": true,
+        "createdAt": "2013-11-03T11:00:00.000Z",
+        "updatedAt": "2013-11-03T11:00:00.000Z"
+    },
+    {
+        "id": 5,
+        "code": 5,
+        "type": "byke",
+        "lat": -85.27428,
+        "long": -49.53882,
+        "nol": true,
+        "createdAt": "2013-11-03T11:00:00.000Z",
+        "updatedAt": "2013-11-03T11:00:00.000Z"
+    },
+    {
+        "id": 6,
+        "code": 6,
+        "type": "byke",
+        "lat": 3.49079,
+        "long": -160.96622,
+        "nol": true,
+        "createdAt": "2014-11-03T11:00:00.000Z",
+        "updatedAt": "2014-11-03T11:00:00.000Z"
+    },
+    {
+        "id": 7,
+        "code": 7,
+        "type": "byke",
+        "lat": 3.49079,
+        "long": -160.96622,
+        "nol": true,
+        "createdAt": "2014-11-03T11:00:00.000Z",
+        "updatedAt": "2014-11-03T11:00:00.000Z"
     }
 ]
 
@@ -45,17 +85,17 @@ vehicles=[
         var d = 6371 * c; 
         return d
     }
-
+const list_vehicles=[];
 for(var i=0; i<vehicles.length; i++){
-        var dist = Harvesine(4.88350,i.lat, -81.84767,i.long);
+        var dist = Harvesine(4.88350,vehicles[i].lat, -81.84767,vehicles[i].long);
         vehicles[i]['distance'] = dist;
-    }
-    //sort/-61.82858/151.50799
-    function compare(a,b) {
+        list_vehicles.push(vehicles[i]);
+    console.log(list_vehicles[i])
+    }    function compare(a,b) {
         if (a.distance < b.distance)
            return -1;
         if (a.distance > b.distance)
           return 1;
         return 0;
       }
-      console.log(vehicles.sort(compare))
+console.log(list_vehicles.sort(compare))

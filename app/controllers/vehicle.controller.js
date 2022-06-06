@@ -41,6 +41,7 @@ exports.listAvailable = async (req, res) => {
 };
 
 exports.sortVehicles=async(req,res)=>{
+<<<<<<< HEAD
     var vehicles = [];
     if (req.body.type) {
         vehicles = await Vehicles.findAll({
@@ -53,8 +54,15 @@ exports.sortVehicles=async(req,res)=>{
     }
     for(var i = 0; i < vehicles.length; i++){
         var dist = utils.Harvesine(req.user.lat, i.lat, req.user.long, i.long);
+=======
+
+    const vehicles = await Vehicles.findAll()
+    const list_vehicles=[];
+    for(var i=0; i<vehicles.length; i++){
+        var dist = Harvesine(req.user.lat,vehicles[i].lat, req.user.long,vehicles[i].long);
+>>>>>>> 4474e012dab6c26f178fa5f8521d56ac22a880ff
         vehicles[i]['distance'] = dist;
-        //console.log("Latitudine elemento",i,": ",i.lat, "Longitudine elemento",i,": ",i.long)
+        list_vehicles.push(vehicles[i]);
     }
     //sort/4.88350/-81.84767
     function compare(a,b) {
@@ -64,8 +72,7 @@ exports.sortVehicles=async(req,res)=>{
           return 1;
         return 0;
       }
-      sorted_vehicles = Promise.resolve(vehicles.sort(compare));   
-      sorted_vehicles.then(data => {
+      list_vehicles.sort(compare).then(data => {
         res.status(200).send(data);
     })
     .catch(err => {
