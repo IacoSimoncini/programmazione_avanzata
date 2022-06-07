@@ -179,17 +179,24 @@ exports.stop = async (req, res) => {
     });
 }
 exports.done = async (req, res) => {
+    const user = await Users.findOne({
+        where: {
+            email: req.user.email
+        }
+    })
+
     const rent = await Rental.findAll({
         where: {email: req.user.email}
     }).then(rent=> {
+
         const price_avg=rent.reduce((total,next)=>total+next.payment,0)/rent.length;
         const price_min=rent.reduce((prev,curr)=>prev.payment<curr.payment ?prev:curr);
         const price_max=rent.reduce((prev,curr)=>prev.payment>curr.payment ?prev:curr);
         const time_avg=rent.reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.length;
-        const time_min=rent.reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start,curr.end) ?utils.convert_time(prev.start,prev.end):utils.convert_time(curr.start,curr.end));
-        const time_max=rent.reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) > utils.convert_time(curr.start,curr.end) ?utils.convert_time(prev.start,prev.end):utils.convert_time(curr.start,curr.end));
+        const time_min=rent.reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start,curr.end) ?prev:curr);
+        const time_max=rent.reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) > utils.convert_time(curr.start,curr.end) ? prev:curr);
         const nol_done=rent.length;
-        const credito_residuo=req.user.credit;
+        const credito_residuo=user.credit;
         res.status(200).send({
            "prezzo medio" :price_avg,
            "prezzo minimo":price_min.payment,
