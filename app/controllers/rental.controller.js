@@ -1,3 +1,4 @@
+const { render } = require("express/lib/response");
 const { parking, users } = require("../models");
 const db = require("../models");
 const utils = require('../utils/utils.js')
@@ -176,4 +177,33 @@ exports.stop = async (req, res) => {
     res.status(200).send({
         message: credit
     });
+}
+exports.done = async (req, res) => {
+    const rent = await Rental.findAll({
+        where: {email: req.user.email}
+    }).then(rent=> {
+        const price_avg=rent.reduce((total,next)=>total+next.payment,0)/rent.length;
+        const price_min=rend.reduce((prev,curr)=>prev.payment<curr.payment ?prev:curr);
+        const price_max=rend.reduce((prev,curr)=>prev.payment>curr.payment ?prev:curr);
+        const time_avg=rend.reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.length;
+        const time_min=rend.reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start,curr.end) ?prev:curr);
+        const time_max=rend.reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) > utils.convert_time(curr.start,curr.end) ?prev:curr);
+        const nol_done=rend.length;
+        const credito_residuo=req.user.credit;
+        res.status(200).send({
+           "prezzo medio" :price_avg,
+           "prezzo minimo":price_min,
+           "prezzo massimo":price_max,
+           "durata media":time_avg,
+           "durata minima":time_min,
+           "durata massima": time_max,
+           "noleggi effettuati": nol_done,
+           "credito residuo":credito_residuo
+        })
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Internal server error."
+        });
+    })
+
 }
