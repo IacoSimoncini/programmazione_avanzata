@@ -10,7 +10,19 @@ const Op = db.Sequelize.Op;
 
 
 exports.start = async (req, res) => {
+     async function getTypeFromId(){
+        const vehicle= await Vehicles.findOne(
+        {
+            where: {
+                id: req.params.id
+            }
+        }
 
+    )
+    console.log(vehicle.type )
+    return vehicle.type 
+    
+}
     var list = [];
     const check = await Rental.findAll({
         where: {
@@ -29,24 +41,15 @@ exports.start = async (req, res) => {
             message: `${req.user.email} is already renting a vehicle.`
         });
     } else {
-        function getTypeFromId(id_veicolo){
-                const vehicle= Vehicles.findOne(
-                {
-                    where: {
-                        id: id_veicolo
-                    }
-                }
 
-            )
-            return vehicle.type; 
-        }
         const rental = {
             email: req.user.email,
             payment: null,
             start: Date.now(),
             end: null,
             id_vehicle: req.params.id,
-            type_vehicle: getTypeFromId(req.params.id)
+            type_vehicle: getTypeFromId()//getTypeFromId(req.params.id)
+            
         };
 
 
