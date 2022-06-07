@@ -7,6 +7,7 @@ const Parkings = db.parking;
 const Users = db.users;
 const Op = db.Sequelize.Op;
 
+
 exports.start = async (req, res) => {
     var list = [];
     const check = await Rental.findAll({
@@ -76,6 +77,10 @@ exports.stop = async (req, res) => {
     }).then(data => {
         id_vehicle = data.id_vehicle;
         start = data.start;
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Internal server error."
+        });
     });
     var credit = 0;
     await Users.findOne({
@@ -84,27 +89,39 @@ exports.stop = async (req, res) => {
         }
     }).then(data => {
         credit = data.credit;
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Internal server error."
+        });
     });
-    const vehicle = await Vehicles.findAll({
+    const vehicle = await Vehicles.findOne({
         where: {
-            id: id_vehicle
+            code: id_vehicle
         }
     }).then(data => {
         type = data.type;
-    })
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Internal server error."
+        });
+    });
     let payment = 0;
     let end = Date.now();
-    let time = (end / 60) - (start / 60);
+    var time = utils.convert_time(start, end);
     let multiplier = 2;
-    var parkings = await Parkings.findAll();
-    for (const parking in parkings){
-        let d = utils.Harvesine(req.body.lat, parking.lat, req.body.long, parking.long);
-        if (d < 50) {
-            multiplier = 1;
-            break;
-        }
-    }
-    console.log(type)
+    const parkings = await Parkings.findAll()
+        .then(parking => {
+            parking.map(x => {
+                let d = utils.Harvesine(req.body.lat, x.lat, req.body.long, x.long);
+                if (d < 50){
+                    multiplier = 1;
+                }
+            });
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Internal server error."
+            });
+        });
     switch(type) {
         case 'bike':
             payment = Math.ceil((1 + (0.1 * time) * multiplier));
@@ -128,17 +145,35 @@ exports.stop = async (req, res) => {
             email: req.user.email,
             end: null
         }
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Internal server error."
+        })
     });
     credit = credit - payment;
-    console.log(payment);
     await Users.update({
         credit: credit
     }, {
         where:{
             email: req.user.email
         }
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Internal server error."
+        });
     });
+    await Vehicles.update({
+        nol: true
+    }, {
+        where: {
+            code: id_vehicle
+        }
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Internal server error."
+        });
+    })
     res.status(200).send({
         message: credit
-    })
+    });
 }
