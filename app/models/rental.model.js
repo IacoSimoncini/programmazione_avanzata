@@ -14,6 +14,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       id_vehicle: {
         type: Sequelize.INTEGER
+      },
+      type_vehicle: {
+        type: Sequelize.STRING
       }
     });
     return Rental;
