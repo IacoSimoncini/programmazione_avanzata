@@ -4,7 +4,7 @@ module.exports = app => {
     var router = require("express").Router();
     router.post("/start/:id", [auth.checkHeader, auth.checkCredit], rentalController.start);
     router.post("/stop", [auth.checkHeader, auth.checkCredit], rentalController.stop);
-    router.get("/done",[auth.checkHeader], rentalController.done)
+    router.post("/done",[auth.checkHeader], rentalController.done)
     app.use('/api/rental', router);
 
 }
