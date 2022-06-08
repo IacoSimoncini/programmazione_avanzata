@@ -212,10 +212,10 @@ exports.done = async (req, res) => {
             console.log(rent.filter(x=>{x.start>=req.body.start && x.end<=req.body.end}))
         }
 
-        const price_avg_bike=rent.filter(x=>x.type_vehicle==="bike").reduce((total,next)=>total+next.payment,0)/rent.length;
-        const price_avg_ebike=rent.filter(x=>x.type_vehicle==="ebike").reduce((total,next)=>total+next.payment,0)/rent.length;
-        const price_avg_escooter=rent.filter(x=>x.type_vehicle==="escooter").reduce((total,next)=>total+next.payment,0)/rent.length;
-        const price_avg_tandem=rent.filter(x=>x.type_vehicle==="tandem").reduce((total,next)=>total+next.payment,0)/rent.length;
+        const price_avg_bike=rent.filter(x=>x.type_vehicle==="bike").reduce((total,next)=>total+next.payment,0)/rent.filter(x=>x.type_vehicle==="bike").length;
+        const price_avg_ebike=rent.filter(x=>x.type_vehicle==="ebike").reduce((total,next)=>total+next.payment,0)/rent.filter(x=>x.type_vehicle==="ebike").length;
+        const price_avg_escooter=rent.filter(x=>x.type_vehicle==="escooter").reduce((total,next)=>total+next.payment,0)/rent.filter(x=>x.type_vehicle==="escooter").length;
+        const price_avg_tandem=rent.filter(x=>x.type_vehicle==="tandem").reduce((total,next)=>total+next.payment,0)/rent.filter(x=>x.type_vehicle==="tandem").length;
 
         const price_min_bike=rent.filter(x=>x.type_vehicle==="bike").reduce((prev,curr)=>prev.payment<curr.payment ?prev:curr);
         const price_min_ebike=rent.filter(x=>x.type_vehicle==="ebike").reduce((prev,curr)=>prev.payment<curr.payment ?prev:curr);
@@ -227,10 +227,10 @@ exports.done = async (req, res) => {
         const price_max_escooter=rent.filter(x=>x.type_vehicle==="escooter").reduce((prev,curr)=>prev.payment>curr.payment ?prev:curr);
         const price_max_tandem=rent.filter(x=>x.type_vehicle==="tandem").reduce((prev,curr)=>prev.payment>curr.payment ?prev:curr);
 
-        const time_avg_bike=rent.filter(x=>x.type_vehicle==="bike").reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.length;
-        const time_avg_ebike=rent.filter(x=>x.type_vehicle==="ebike").reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.length;
-        const time_avg_escooter=rent.filter(x=>x.type_vehicle==="escooter").reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.length;
-        const time_avg_tandem=rent.filter(x=>x.type_vehicle==="tandem").reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.length;
+        const time_avg_bike=rent.filter(x=>x.type_vehicle==="bike").reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.filter(x=>x.type_vehicle==="bike").length;
+        const time_avg_ebike=rent.filter(x=>x.type_vehicle==="ebike").reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.filter(x=>x.type_vehicle==="ebike").length;
+        const time_avg_escooter=rent.filter(x=>x.type_vehicle==="escooter").reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.filter(x=>x.type_vehicle==="escooter").length;
+        const time_avg_tandem=rent.filter(x=>x.type_vehicle==="tandem").reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.filter(x=>x.type_vehicle==="tandem").length;
 
         const time_min_bike=rent.filter(x=>x.type_vehicle==="bike").reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start,curr.end) ?prev:curr);
         const time_min_ebike=rent.filter(x=>x.type_vehicle==="ebike").reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start,curr.end) ?prev:curr);
