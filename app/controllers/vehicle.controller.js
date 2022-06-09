@@ -8,7 +8,8 @@ exports.create = (req, res) => {
         nol: true,
         type: req.body.type,
         lat: req.body.lat,
-        long: req.body.long
+        long: req.body.long,
+        id_vehicle: req.body.id_vehicle
     };
     Vehicles.create(vehicle)
         .then(data => {

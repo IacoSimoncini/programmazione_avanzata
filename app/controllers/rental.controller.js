@@ -1,5 +1,3 @@
-const { render } = require("express/lib/response");
-const { parking, users } = require("../models");
 const db = require("../models");
 const utils = require('../utils/utils.js')
 const Rental = db.rental;
@@ -14,14 +12,13 @@ exports.start = async (req, res) => {
         var type = "";
         const vehicle= await Vehicles.findOne({
                 where: {
-                    id: id_veicolo
+                    id_vehicle: id_veicolo
                 }
             }
         ).then(data => {
             type = data.type;
-            console.log(data.type)
         })
-        console.log("************************************************",type)
+        
         return type; 
     }
     var list = [];
@@ -52,22 +49,26 @@ exports.start = async (req, res) => {
             type_vehicle: await getTypeFromId(req.params.id)
             
         };
-
-
-        const vehicle = await Vehicles.findByPk(rental.id_vehicle);
+        
+        const vehicle = await Vehicles.findOne({
+            where: {
+                id_vehicle: rental.id_vehicle
+            }
+        });
         if (vehicle) {
             await Vehicles.update({ 
                 nol: false 
             },
             {
                 where: {
-                    id: rental.id_vehicle
+                    id_vehicle: rental.id_vehicle
                 }
             }).catch(err => {
                 res.status(500).send({
                     message: err.message || "Some error occurred while updating"
                 });
             });
+            console.log(req.user.emai)
             await Rental.create(rental)
             .then(data => {
                 res.status(200).send(data);
@@ -95,6 +96,11 @@ exports.stop = async (req, res) => {
             end: null
         }
     }).then(data => {
+        if (!data){
+            res.status(400).send({
+                message: "Bad request."
+            });
+        }
         id_vehicle = data.id_vehicle;
         start = data.start;
     }).catch(err => {
@@ -116,7 +122,7 @@ exports.stop = async (req, res) => {
     });
     const vehicle = await Vehicles.findOne({
         where: {
-            code: id_vehicle
+            id_vehicle: id_vehicle
         }
     }).then(data => {
         type = data.type;
@@ -186,7 +192,7 @@ exports.stop = async (req, res) => {
         nol: true
     }, {
         where: {
-            code: id_vehicle
+            id_vehicle: id_vehicle
         }
     }).catch(err => {
         res.status(500).send({
