@@ -6,7 +6,7 @@ module.exports = app => {
     var router = require("express").Router();
 
     router.post("/", vehicleController.create);
-    router.get("/filter/:type/", vehicleController.listAvailable);
-    router.post("/sort", [auth.checkHeader], vehicleController.sortVehicles);
+    router.get("/available/:type/", vehicleController.listAvailable);
+    router.post("/filter", [auth.checkHeader], vehicleController.filterVehicles);
     app.use('/api/vehicle', router); 
 }
