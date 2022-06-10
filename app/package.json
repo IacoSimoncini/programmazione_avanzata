@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "seed":"npx sequelize-cli db:seed:all",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "debug": "DEBUG=app:* npm start",
+    "migrate": "db-migrate up initialize"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
