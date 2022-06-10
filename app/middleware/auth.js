@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const db = require("../models");
 const Users = db.users;
+require('dotenv').config();
 
 /*
 *   Authentication of the user making the request
@@ -11,7 +12,7 @@ exports.checkHeader = (req, res, next) => {
         return res.status(403).send("Token is missing.");
     }
     try {
-        const decoded = jwt.verify(token, 'SECRET_KEY');        // process.env.SECRET_KEY
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);        // process.env.SECRET_KEY
         req.user = decoded;
     } catch (err) {
         return res.status(401).send({

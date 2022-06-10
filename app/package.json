@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "seed":"npx sequelize-cli db:seed:all",
+    "seed": "npx sequelize-cli db:seed:all",
     "start": "node ./bin/www",
     "debug": "DEBUG=app:* npm start",
     "migrate": "db-migrate up initialize",
@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
+    "db-migrate": "^0.11.13",
+    "db-migrate-pg": "^1.2.2",
     "debug": "~2.6.9",
+    "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
