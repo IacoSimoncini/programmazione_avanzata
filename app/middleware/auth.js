@@ -1,21 +1,23 @@
 const jwt = require("jsonwebtoken");
+const db = require("../models");
+const Users = db.users;
 
 /*
 *   Authentication of the user making the request
 */
 exports.checkHeader = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
+    const token = req.token;
+    if (!token) {
         return res.status(403).send("Token is missing.");
     }
     try {
-        const decoded = jwt.verify(authHeader, 'SECRET_KEY');        // process.env.SECRET_KEY
+        const decoded = jwt.verify(token, 'SECRET_KEY');        // process.env.SECRET_KEY
         req.user = decoded;
     } catch (err) {
         return res.status(401).send({
             message: "Invalid Token.",
             error: err
-        })        
+        });       
     }
     return next();
 };
@@ -35,25 +37,43 @@ exports.checkUser = (req, res, next) => {
 /*
 *   User credit verification
 */
-exports.checkCredit = (req, res, next) => {
+exports.checkCredit = async (req, res, next) => {
     const user = req.user;
-    if (user.credit < 0) {
-        res.status(401).send("Unauthorized.");
-    } else {
-        return next();
-    }
+    const User = await Users.findOne({
+        where: {
+            email: req.user.email
+        }
+    })
+    .then(user => {
+        if (user){
+            if (user.credit < 0) {
+                res.status(401).send("Unauthorized.");
+            } else {
+                next();
+            }
+        } else {
+            res.status(400).send({
+                message: "User not found."
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || "Internal server error."
+        })
+    });
 }
 
-exports.decodeToken = (req, res, next) => {
-    const token = req.body.token;
-    if (!token) {
-        return res.status(403).send("Token is missing.");
+exports.verifyToken = (req, res, next) => {
+    const bearerHeader = req.headers.authorization;
+    if (typeof bearerHeader !== 'undefined') {
+        const bearer = bearerHeader.split(' ');
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+        next()
+    } else {
+        res.status(403).send({
+            message: "Unauthorized."
+        });
     }
-    try {
-        const decoded = jwt.verify(token, 'SECRET_KEY');        // process.env.SECRET_KEY
-        req.body = decoded;
-    } catch (err) {
-        return res.status(401).send("Invalid Token.")        
-    }
-    return next();
 }

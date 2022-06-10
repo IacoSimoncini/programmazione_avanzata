@@ -27,8 +27,6 @@ exports.listAvailable = async (req, res) => {
         where: {
                 nol: true,
                 type: req.params.type,
-                //lat: req.params.lat,
-                //long: req.params.long,
             }
         })
         .then(data => {

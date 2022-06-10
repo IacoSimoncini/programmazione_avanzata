@@ -64,6 +64,7 @@ module.exports = (sequelize: any, Sequelize: any) => {
   }, {
     sequelize,
     modelName: 'Rental',
+    timestamps: false
   });
   return Rental;
 };

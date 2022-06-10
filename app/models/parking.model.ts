@@ -40,6 +40,7 @@ module.exports = (sequelize: any, Sequelize: any) => {
   }, {
     sequelize,
     modelName: 'Parking',
+    timestamps: false
   });
   return Parking;
 };

@@ -23,6 +23,7 @@ module.exports = (sequelize, Sequelize) => {
     }, {
         sequelize,
         modelName: 'Parking',
+        timestamps: false
     });
     return Parking;
 };

@@ -59,6 +59,7 @@ module.exports = (sequelize: any, Sequelize: any) => {
   }, {
     sequelize,
     modelName: 'User',
+    timestamps: false
   });
   return User;
 };

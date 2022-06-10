@@ -18,7 +18,6 @@ exports.start = async (req, res) => {
         ).then(data => {
             type = data.type;
         })
-        
         return type; 
     }
     var list = [];

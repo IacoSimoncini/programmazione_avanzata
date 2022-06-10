@@ -4,9 +4,11 @@ const Op = db.Sequelize.Op;
 const utils = require('../utils/utils.js')
 
 exports.create = (req, res) => {
+    const lat = req.body.lat;
+    const long = req.body.long;
     const parking = {
-        lat: req.body.lat,
-        long: req.body.long
+        lat: lat,
+        long: long
     };
     Parking.create(parking)
         .then(data => {

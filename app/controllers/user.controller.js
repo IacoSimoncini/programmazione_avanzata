@@ -22,13 +22,15 @@ exports.create = (req, res) => {
 };
 
 exports.credit = (req, res) => {
-    Users.findAll({
+    Users.findOne({
         where: {
             email: req.user.email
         }
     }).then(data => {
         if (data) {
-            res.status(200).send(data);
+            res.status(200).send({
+                credit: data.credit
+            });
         } else {
             res.status(404).send({
                 message: "Not found."
@@ -51,7 +53,8 @@ exports.updateCredit = async (req, res) => {
             where: { email: req.body.email }
         }
     ).then(data => {
-        if (data) {
+        console.log(data)
+        if (data[0] !== 0) {
             res.status(200).send({
                 message: "Credit updated."
             });
