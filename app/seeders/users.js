@@ -9,11 +9,8 @@ module.exports = {
         lat:43.617296, 
         long:13.516360,
         role:'user'
-<<<<<<< HEAD
-=======
         
         
->>>>>>> 9692792deaf1d1d3099d61426e5fbac942484c9e
       },
       {
         id:'18f79503-9982-47cb-b6cf-4b6ae7163c50',
@@ -22,11 +19,8 @@ module.exports = {
         lat:43.617211, 
         long:13.517393,
         role:'user'
-<<<<<<< HEAD
-=======
         
         
->>>>>>> 9692792deaf1d1d3099d61426e5fbac942484c9e
     },
     {
         id:'9fa53ba2-5269-4772-bca1-79042204bf12',
@@ -35,11 +29,8 @@ module.exports = {
         lat:43.616799, 
         long:13.516084,
         role:'user'
-<<<<<<< HEAD
-=======
         
         
->>>>>>> 9692792deaf1d1d3099d61426e5fbac942484c9e
     },
     {
         id:'09f90935-0aff-40eb-9256-01a230aa25e1',
@@ -48,11 +39,8 @@ module.exports = {
         lat:43.618011, 
         long:13.512168,
         role:'admin'
-<<<<<<< HEAD
-=======
         
         
->>>>>>> 9692792deaf1d1d3099d61426e5fbac942484c9e
     }
     
 
