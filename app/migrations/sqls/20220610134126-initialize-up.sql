@@ -16,7 +16,7 @@ ALTER TABLE public."Users"
 CREATE TABLE IF NOT EXISTS "Vehicles" 
 (
     "id" UUID NOT NULL , 
-    "id_vehicle" INTEGER NOT NULL, 
+    "id_vehicle" INTEGER NOT NULL UNIQUE, 
     "type" VARCHAR(255) NOT NULL, 
     "lat" FLOAT NOT NULL, 
     "long" FLOAT NOT NULL, 
