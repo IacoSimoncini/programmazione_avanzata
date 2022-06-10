@@ -8,9 +8,9 @@ module.exports = {
         email:'user1@gmail.com',
         lat:43.617296, 
         long:13.516360,
-        role:'user',
-        createdAt:new Date(),
-        updatedAt:new Date()
+        role:'user'
+        
+        
       },
       {
         id:'18f79503-9982-47cb-b6cf-4b6ae7163c50',
@@ -18,9 +18,9 @@ module.exports = {
         email:'user2@gmail.com',
         lat:43.617211, 
         long:13.517393,
-        role:'user',
-        createdAt:new Date(),
-        updatedAt:new Date()
+        role:'user'
+        
+        
     },
     {
         id:'9fa53ba2-5269-4772-bca1-79042204bf12',
@@ -28,9 +28,9 @@ module.exports = {
         email:'user3@gmail.com',
         lat:43.616799, 
         long:13.516084,
-        role:'user',
-        createdAt:new Date(),
-        updatedAt:new Date()
+        role:'user'
+        
+        
     },
     {
         id:'09f90935-0aff-40eb-9256-01a230aa25e1',
@@ -38,9 +38,9 @@ module.exports = {
         email:'admin@gmail.com',
         lat:43.618011, 
         long:13.512168,
-        role:'admin',
-        createdAt:new Date(),
-        updatedAt:new Date()
+        role:'admin'
+        
+        
     }
     
 
