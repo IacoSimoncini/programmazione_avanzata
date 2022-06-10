@@ -1,5 +1,5 @@
 /* Replace with your SQL commands */
-DROP TABLE public."Users";
-DROP TABLE public."Vehicles";
-DROP TABLE public."Parkings";
-DROP TABLE public."Rentals";
+DROP TABLE IF EXISTS public."Users" ;
+DROP TABLE IF EXISTS public."Vehicles";
+DROP TABLE IF EXISTS public."Parkings";
+DROP TABLE IF EXISTS public."Rentals";

@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: 
+      - '5432:5432'
+    volumes:
+      - ./migrations/sqls:/docker-entrypoint-initdb.d
+
+  app:
+    container_name: node_backend
+    image: node
+    build: .
+    ports:
+      - '8080:8080'
+    environment:
+      DB_SCHEMA: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: postgres
+    depends_on:
+      - postgres
