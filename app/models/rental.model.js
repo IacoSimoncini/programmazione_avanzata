@@ -17,7 +17,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false
         },
         payment: {
-            type: Sequelize.STRING,
+            type: Sequelize.FLOAT,
             allowNull: true
         },
         start: {
