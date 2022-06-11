@@ -12,6 +12,9 @@ function Harvesine(lat1, lat2, long1, long2) {
     return d / 1000;
 }
 function convert_time(a, b) {
+    if (a === 0 && b == 0) {
+        return 0;
+    }
     var dateA = new Date(a);
     var dateB = new Date(b);
     return dateB.getHours() * 60 + dateB.getMinutes() - dateA.getHours() * 60 - dateA.getMinutes();

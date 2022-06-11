@@ -29,3 +29,17 @@ exports.errorsParking = (req: express.Request, res: express.Response, next: expr
         })
     }
 };
+
+exports.errorsVehicles = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const id_vehicle: number = req.body.id_vehicle;
+    const type: string = req.body.type;
+    const lat: number = req.body.lat;
+    const long: number = req.body.long;
+    if (typeof lat === "number" && typeof long === "number" && typeof id_vehicle === "number" && typeof type === "string") {
+        next();
+    } else {
+        return res.status(400).send({
+            message: "Invalid type."
+        });
+    }
+};

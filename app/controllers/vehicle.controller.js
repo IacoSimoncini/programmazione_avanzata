@@ -3,6 +3,12 @@ const Vehicles = db.vehicles;
 const Op = db.Sequelize.Op;
 const utils = require('../utils/utils.js')
 
+/**
+ * Create vehicle in database
+ * 
+ * @param {Request} req 
+ * @param {Response} res 
+ */
 exports.create = (req, res) => {
     const vehicle = {
         nol: true,
@@ -13,15 +19,21 @@ exports.create = (req, res) => {
     };
     Vehicles.create(vehicle)
         .then(data => {
-            res.status(200).send(data);
+            return res.status(200).send(data);
         })
         .catch(err => {
-            res.status(500).send({
+            return res.status(400).send({
                 message: err.message || "Some error occurred while creating vehicle"
             });
         });
 };
 
+/**
+ * Creates the list of vehicles available for rental
+ * 
+ * @param {Request} req 
+ * @param {Response} res 
+ */
 exports.listAvailable = async (req, res) => {
     const vehicles = await Vehicles.findAll({
         where: {
@@ -30,15 +42,21 @@ exports.listAvailable = async (req, res) => {
             }
         })
         .then(data => {
-            res.status(200).send(data);
+            return res.status(200).send(data);
         })
         .catch(err => {
-            res.status(500).send({
+            return res.status(500).send({
                 message: err.message || "Internal server error."
             });
         });
 };
 
+/**
+ * List of vehicles available by type and distance from the user's position
+ * 
+ * @param {Request} req 
+ * @param {Response} res 
+ */
 exports.filterVehicles = async(req, res) => {
     var vehicles = [];
     var list_vehicles=[];
@@ -64,15 +82,15 @@ exports.filterVehicles = async(req, res) => {
         }
         sorted_vehicles = Promise.resolve(list_vehicles.sort(compare))
             .then(data => {
-                res.status(200).send(data);
+                return res.status(200).send(data);
             })
             .catch(err => {
-                res.status(500).send({
+                return res.status(500).send({
                     message: err.message || "Internal server error."
                 });
             });
     } else {
-        res.status(400).send({
+        return res.status(400).send({
             message: "Error in query. Can't find parameters for filtering."
         });
     }

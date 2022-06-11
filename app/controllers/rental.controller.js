@@ -6,7 +6,12 @@ const Parkings = db.parking;
 const Users = db.users;
 const Op = db.Sequelize.Op;
 
-
+/**
+ * Start a rent
+ * 
+ * @param {Request} req 
+ * @param {Response} res 
+ */
 exports.start = async (req, res) => {
     async function getTypeFromId(id_veicolo){
         var type = "";
@@ -85,6 +90,12 @@ exports.start = async (req, res) => {
     }
 };
 
+/**
+ * Stop a rent
+ * 
+ * @param {Request} req 
+ * @param {Response} res 
+ */
 exports.stop = async (req, res) => {
     var id_vehicle = 0;
     var type = '';
@@ -96,14 +107,14 @@ exports.stop = async (req, res) => {
         }
     }).then(data => {
         if (!data){
-            res.status(400).send({
+            return res.status(400).send({
                 message: "Bad request."
             });
         }
         id_vehicle = data.id_vehicle;
         start = data.start;
     }).catch(err => {
-        res.status(500).send({
+        return res.status(500).send({
             message: err.message || "Internal server error."
         });
     });
@@ -115,7 +126,7 @@ exports.stop = async (req, res) => {
     }).then(data => {
         credit = data.credit;
     }).catch(err => {
-        res.status(500).send({
+        return res.status(500).send({
             message: err.message || "Internal server error."
         });
     });
@@ -126,7 +137,7 @@ exports.stop = async (req, res) => {
     }).then(data => {
         type = data.type;
     }).catch(err => {
-        res.status(500).send({
+        return res.status(500).send({
             message: err.message || "Internal server error."
         });
     });
@@ -143,7 +154,7 @@ exports.stop = async (req, res) => {
                 }
             });
         }).catch(err => {
-            res.status(500).send({
+            return res.status(500).send({
                 message: err.message || "Internal server error."
             });
         });
@@ -171,7 +182,7 @@ exports.stop = async (req, res) => {
             end: null
         }
     }).catch(err => {
-        res.status(500).send({
+        return res.status(500).send({
             message: err.message || "Internal server error."
         })
     });
@@ -183,7 +194,7 @@ exports.stop = async (req, res) => {
             email: req.user.email
         }
     }).catch(err => {
-        res.status(500).send({
+        return res.status(500).send({
             message: err.message || "Internal server error."
         });
     });
@@ -194,14 +205,32 @@ exports.stop = async (req, res) => {
             id_vehicle: id_vehicle
         }
     }).catch(err => {
-        res.status(500).send({
+        return res.status(500).send({
             message: err.message || "Internal server error."
         });
     })
-    res.status(200).send({
+    return res.status(200).send({
         message: credit
     });
 }
+
+/**
+ * Returns the list of rentals made by a specific user.
+ * Returns a json constructed as follows:
+ *      - Lista dei noleggi
+ *      - Categoria
+ *          - Costo minimo
+ *          - Costo massimo
+ *          - Costo medio
+ *          - Durata minima
+ *          - Durata massima
+ *          - Durata media
+ *      - Noleggi effettuati
+ *      - Credito residuo
+ * 
+ * @param {Request} req 
+ * @param {Response} res 
+ */
 exports.done = async (req, res) => {
     const user = await Users.findOne({
         where: {
@@ -212,83 +241,142 @@ exports.done = async (req, res) => {
         where: {email: req.user.email}
     }).then(rent=> {
 
-        if(req.body){
-            rent.filter(x=>{x.start>=req.body.start && x.end<=req.body.end})
-            console.log(rent.filter(x=>{x.start>=req.body.start && x.end<=req.body.end}))
+        var arr_bike = []
+        var arr_ebike = []
+        var arr_escooter = []
+        var arr_tandem = []
+        var all_rent = []
+        
+        if (req.body.start && req.body.end) {
+            all_rent = rent.filter(x => { if (x.start >= req.body.start && x.end <= req.body.end) return x });
+            arr_bike = all_rent.filter(x => x.type_vehicle === "bike");
+            arr_ebike = all_rent.filter(x => x.type_vehicle === "ebike");
+            arr_escooter = all_rent.filter(x => x.type_vehicle === "escooter");
+            arr_tandem = all_rent.filter(x => x.type_vehicle === "tandem");
+        } else {
+            all_rent = rent;
+            arr_bike = rent.filter(x => x.type_vehicle === "bike");
+            arr_ebike = rent.filter(x => x.type_vehicle === "ebike");
+            arr_escooter = rent.filter(x => x.type_vehicle === "escooter");
+            arr_tandem = rent.filter(x => x.type_vehicle === "tandem");
         }
 
-        const price_avg_bike=rent.filter(x=>x.type_vehicle==="bike").reduce((total,next)=>total+next.payment,0)/rent.filter(x=>x.type_vehicle==="bike").length;
-        const price_avg_ebike=rent.filter(x=>x.type_vehicle==="ebike").reduce((total,next)=>total+next.payment,0)/rent.filter(x=>x.type_vehicle==="ebike").length;
-        const price_avg_escooter=rent.filter(x=>x.type_vehicle==="escooter").reduce((total,next)=>total+next.payment,0)/rent.filter(x=>x.type_vehicle==="escooter").length;
-        const price_avg_tandem=rent.filter(x=>x.type_vehicle==="tandem").reduce((total,next)=>total+next.payment,0)/rent.filter(x=>x.type_vehicle==="tandem").length;
+        var price_avg_bike = 0;
+        var price_min_bike = 0;
+        var price_max_bike = 0;
+        var time_avg_bike = 0;
+        var time_min_bike = 0;
+        var time_max_bike = 0;
 
-        const price_min_bike=rent.filter(x=>x.type_vehicle==="bike").reduce((prev,curr)=>prev.payment<curr.payment ?prev:curr);
-        const price_min_ebike=rent.filter(x=>x.type_vehicle==="ebike").reduce((prev,curr)=>prev.payment<curr.payment ?prev:curr);
-        const price_min_escooter=rent.filter(x=>x.type_vehicle==="escooter").reduce((prev,curr)=>prev.payment<curr.payment ?prev:curr);
-        const price_min_tandem=rent.filter(x=>x.type_vehicle==="tandem").reduce((prev,curr)=>prev.payment<curr.payment ?prev:curr);
+        var price_avg_ebike = 0;
+        var price_min_ebike = 0;
+        var price_max_ebike = 0;
+        var time_avg_ebike = 0;
+        var time_min_ebike = 0;
+        var time_max_ebike = 0;
 
-        const price_max_bike=rent.filter(x=>x.type_vehicle==="bike").reduce((prev,curr)=>prev.payment>curr.payment ?prev:curr);
-        const price_max_ebike=rent.filter(x=>x.type_vehicle==="ebike").reduce((prev,curr)=>prev.payment>curr.payment ?prev:curr);
-        const price_max_escooter=rent.filter(x=>x.type_vehicle==="escooter").reduce((prev,curr)=>prev.payment>curr.payment ?prev:curr);
-        const price_max_tandem=rent.filter(x=>x.type_vehicle==="tandem").reduce((prev,curr)=>prev.payment>curr.payment ?prev:curr);
+        var price_avg_escooter = 0;
+        var price_min_escooter = 0;
+        var price_max_escooter = 0;
+        var time_avg_escooter = 0;
+        var time_min_escooter = 0;
+        var time_max_escooter = 0;
 
-        const time_avg_bike=rent.filter(x=>x.type_vehicle==="bike").reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.filter(x=>x.type_vehicle==="bike").length;
-        const time_avg_ebike=rent.filter(x=>x.type_vehicle==="ebike").reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.filter(x=>x.type_vehicle==="ebike").length;
-        const time_avg_escooter=rent.filter(x=>x.type_vehicle==="escooter").reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.filter(x=>x.type_vehicle==="escooter").length;
-        const time_avg_tandem=rent.filter(x=>x.type_vehicle==="tandem").reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/rent.filter(x=>x.type_vehicle==="tandem").length;
+        var price_avg_tandem = 0;
+        var price_min_tandem = 0;
+        var price_max_tandem = 0;
+        var time_avg_tandem = 0;
+        var time_min_tandem = 0;
+        var time_max_tandem = 0;
+        
+        if(arr_bike.length > 0) {
+            price_avg_bike = arr_bike.reduce((total,next) => total + next.payment, 0) / arr_bike.length;
+            price_min_bike = arr_bike.reduce((prev,curr) => prev.payment < curr.payment ? prev : curr);
+            price_max_bike = arr_bike.reduce((prev,curr) => prev.payment > curr.payment ? prev : curr);
+            time_avg_bike = arr_bike.reduce((total,next) => total + utils.convert_time(next.start, next.end), 0) / arr_bike.length;
+            time_min_bike = arr_bike.reduce((prev,curr) => utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start, curr.end) ? prev : curr);
+            time_max_bike = arr_bike.reduce((prev,curr) => utils.convert_time(prev.start,prev.end) > utils.convert_time(curr.start, curr.end) ? prev : curr);
+            time_min_bike.conv = utils.convert_time(time_min_bike.start, time_min_bike.end);
+            time_max_bike.conv = utils.convert_time(time_max_bike.start, time_max_bike.end);
+        }
 
-        const time_min_bike=rent.filter(x=>x.type_vehicle==="bike").reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start,curr.end) ?prev:curr);
-        const time_min_ebike=rent.filter(x=>x.type_vehicle==="ebike").reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start,curr.end) ?prev:curr);
-        const time_min_escooter=rent.filter(x=>x.type_vehicle==="escooter").reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start,curr.end) ?prev:curr);
-        const time_min_tandem=rent.filter(x=>x.type_vehicle==="tandem").reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start,curr.end) ?prev:curr);
+        if (arr_ebike.length > 0) {
+            price_avg_ebike = arr_ebike.reduce((total,next) => total + next.payment, 0) / arr_ebike.length;
+            price_min_ebike = arr_ebike.reduce((prev,curr) => prev.payment < curr.payment ? prev : curr);
+            price_max_ebike = arr_ebike.reduce((prev,curr) => prev.payment > curr.payment ? prev : curr);
+            time_avg_ebike = arr_ebike.reduce((total,next) => total + utils.convert_time(next.start, next.end), 0) / arr_ebike.length;
+            time_min_ebike = arr_ebike.reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start,curr.end) ?prev:curr);
+            time_max_ebike = arr_ebike.reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) > utils.convert_time(curr.start,curr.end) ? prev:curr);
+            time_min_ebike.conv = utils.convert_time(time_min_ebike.start, time_min_ebike.end);
+            time_max_ebike.conv = utils.convert_time(time_max_ebike.start, time_max_ebike.end);
+        }
 
-        const time_max_bike=rent.filter(x=>x.type_vehicle==="bike").reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) > utils.convert_time(curr.start,curr.end) ? prev:curr);
-        const time_max_ebike=rent.filter(x=>x.type_vehicle==="ebike").reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) > utils.convert_time(curr.start,curr.end) ? prev:curr);
-        const time_max_escooter=rent.filter(x=>x.type_vehicle==="escooter").reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) > utils.convert_time(curr.start,curr.end) ? prev:curr);
-        const time_max_tandem=rent.filter(x=>x.type_vehicle==="tandem").reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) > utils.convert_time(curr.start,curr.end) ? prev:curr);
+        if (arr_escooter.length > 0) {
+            price_avg_escooter = arr_escooter.reduce((total,next)=>total+next.payment,0)/arr_escooter.length;
+            price_min_escooter = arr_escooter.reduce((prev,curr)=>prev.payment<curr.payment ?prev:curr);
+            price_max_escooter = arr_escooter.reduce((prev,curr)=>prev.payment>curr.payment ?prev:curr);
+            time_avg_escooter = arr_escooter.reduce((total,next)=>total+utils.convert_time(next.start,next.end),0)/arr_escooter.length;
+            time_min_escooter = arr_escooter.reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start,curr.end) ?prev:curr);
+            time_max_escooter = arr_escooter.reduce((prev,curr)=>utils.convert_time(prev.start,prev.end) > utils.convert_time(curr.start,curr.end) ? prev:curr);
+            time_min_escooter.conv = utils.convert_time(time_min_escooter.start, time_min_escooter.end);
+            time_max_escooter.conv = utils.convert_time(time_max_escooter.start, time_max_escooter.end);
+        }
 
-        const nol_done=rent.length;
-        const credito_residuo=user.credit;
-        res.status(200).send(
+        if (arr_tandem.length > 0) {
+            price_avg_tandem = arr_tandem.reduce((total,next) => total + next.payment, 0) / arr_tandem.length;
+            price_min_tandem = arr_tandem.reduce((prev,curr) => prev.payment < curr.payment ? prev : curr);
+            price_max_tandem = arr_tandem.reduce((prev,curr) => prev.payment > curr.payment ? prev : curr);
+            time_avg_tandem = arr_tandem.reduce((total,next) => total + utils.convert_time(next.start, next.end), 0) / arr_tandem.length;
+            time_min_tandem = arr_tandem.reduce((prev,curr) => utils.convert_time(prev.start,prev.end) < utils.convert_time(curr.start,curr.end) ? prev:curr);
+            time_max_tandem = arr_tandem.reduce((prev,curr) => utils.convert_time(prev.start,prev.end) > utils.convert_time(curr.start,curr.end) ? prev:curr);
+            time_min_tandem.conv = utils.convert_time(time_min_tandem.start, time_min_tandem.end);
+            time_max_tandem.conv = utils.convert_time(time_max_tandem.start, time_max_tandem.end);
+        }
+        
+        const nol_done = rent.length;
+        const credito_residuo = user.credit;
+        
+        var jsonResponse = {
+            "List_rent": {
 
-            [{
-                "noleggi effettuati": nol_done,
-                "credito residuo": credito_residuo,
             },
-                {
-                "prezzo medio bike" :price_avg_bike,
-                "prezzo minimo bike":price_min_bike.payment,
-                "prezzo massimo bike":price_max_bike.payment,
-                "durata media bike":time_avg_bike,
-                "durata minima bike":utils.convert_time(time_min_bike.start,time_min_bike.end),
-                "durata massima bike":utils.convert_time(time_max_bike.start,time_max_bike.end)
+            "Bike": {
+                "Min cost": price_min_bike.payment,
+                "Max cost": price_max_bike.payment,
+                "Mean cost" : price_avg_bike,
+                "Min time": time_min_bike.conv,
+                "Max time": time_max_bike.conv,
+                "Mean time": time_avg_bike
             },
-            {
-                "prezzo medio ebike" :price_avg_ebike,
-                "prezzo minimo ebike":price_min_ebike.payment,
-                "prezzo massimo ebike":price_max_ebike.payment,
-                "durata media ebike":time_avg_ebike,
-                "durata minima ebike":utils.convert_time(time_min_ebike.start,time_min_ebike.end),
-                "durata massima ebike":utils.convert_time(time_max_ebike.start,time_max_ebike.end)
+            "Ebike": {
+                "Min cost": price_min_ebike.payment,
+                "Max cost": price_max_ebike.payment,
+                "Mean cost" : price_avg_ebike,
+                "Min time": time_min_ebike.conv,
+                "Max time": time_max_ebike.conv,
+                "Mean time":time_avg_ebike
             },
-            {
-                "prezzo medio escooter" :price_avg_escooter,
-                "prezzo minimo escooter":price_min_escooter.payment,
-                "prezzo massimo escooter":price_max_escooter.payment,
-                "durata media escooter":time_avg_escooter,
-                "durata minima escooter":utils.convert_time(time_min_escooter.start,time_min_escooter.end),
-                "durata massima escooter":utils.convert_time(time_max_escooter.start,time_max_escooter.end)
+            "Escooter": {
+                "Min cost": price_min_escooter.payment,
+                "Max cost": price_max_escooter.payment,
+                "Mean cost" : price_avg_escooter,
+                "Min time": time_min_escooter.conv,
+                "Max time": time_max_escooter.conv,
+                "Mean time":time_avg_escooter
             },
-            {
-                "prezzo medio tandem" :price_avg_tandem,
-                "prezzo minimo tandem":price_min_tandem.payment,
-                "prezzo massimo tandem":price_max_tandem.payment,
-                "durata media tandem":time_avg_tandem,
-                "durata minima tandem":utils.convert_time(time_min_tandem.start,time_min_tandem.end),
-                "durata massima tandem":utils.convert_time(time_max_tandem.start,time_max_tandem.end)
-            }
-            ]
-)
+            "Tandem": {
+                "Min cost": price_min_tandem.payment,
+                "Max cost": price_max_tandem.payment,
+                "Mean cost" : price_avg_tandem,
+                "Min time": time_min_tandem.conv,
+                "Max time": time_max_tandem.conv,
+                "Mean time":time_avg_tandem
+            },
+            "Rentals made": nol_done,
+            "Remaining credit": credito_residuo,
+    }
+    jsonResponse["List_rent"] = all_rent;
+        res.status(200).send(jsonResponse);
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Internal server error."

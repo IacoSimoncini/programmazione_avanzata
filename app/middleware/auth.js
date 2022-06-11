@@ -3,13 +3,20 @@ const db = require("../models");
 const Users = db.users;
 require('dotenv').config();
 
-/*
-*   Authentication of the user making the request
-*/
+/**
+ * Authentication of the user making the request
+ * 
+ * @param {Request} req 
+ * @param {Response} res
+ * @param {next} next
+ * @return {}
+ */
 exports.checkHeader = (req, res, next) => {
     const token = req.token;
     if (!token) {
-        return res.status(403).send("Token is missing.");
+        return res.status(400).send({
+            message: "Invalid Token."
+        }); 
     }
     try {
         const decoded = jwt.verify(token, process.env.SECRET_KEY);        // process.env.SECRET_KEY
@@ -23,21 +30,33 @@ exports.checkHeader = (req, res, next) => {
     return next();
 };
 
-/*
-*   User role verification
-*/
+/**
+ * User role verification
+ * 
+ * @param {Request} req 
+ * @param {Response} res
+ * @param {next} next
+ * @return {}
+ */
 exports.checkUser = (req, res, next) => {
     const user = req.user;
     if (user.role != "admin") {
-        res.status(401).send("Unauthorized.");
+        res.status(401).send({
+            message: "Unauthorized."
+        }); 
     } else {
         return next();
     }
 };
 
-/*
-*   User credit verification
-*/
+/**
+ * User credit verification
+ * 
+ * @param {Request} req 
+ * @param {Response} res
+ * @param {next} next
+ * @return {}
+ */
 exports.checkCredit = async (req, res, next) => {
     const user = req.user;
     const User = await Users.findOne({
@@ -48,7 +67,9 @@ exports.checkCredit = async (req, res, next) => {
     .then(user => {
         if (user){
             if (user.credit < 0) {
-                res.status(401).send("Unauthorized.");
+                res.status(401).send({
+                    message: "Unauthorized."
+                }); 
             } else {
                 next();
             }
@@ -65,6 +86,14 @@ exports.checkCredit = async (req, res, next) => {
     });
 }
 
+/**
+ * Verify the bearer in the header of the request
+ * 
+ * @param {Request} req 
+ * @param {Response} res
+ * @param {next} next
+ * @return {}
+ */
 exports.verifyToken = (req, res, next) => {
     const bearerHeader = req.headers.authorization;
     if (typeof bearerHeader !== 'undefined') {
@@ -73,8 +102,8 @@ exports.verifyToken = (req, res, next) => {
         req.token = bearerToken;
         next()
     } else {
-        res.status(403).send({
+        res.status(401).send({
             message: "Unauthorized."
-        });
+        }); 
     }
 }

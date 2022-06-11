@@ -2,6 +2,12 @@ const db = require("../models");
 const Users = db.users;
 const Op = db.Sequelize.Op;
 
+/**
+ * Create user in database
+ * 
+ * @param {Request} req 
+ * @param {Response} res 
+ */
 exports.create = (req, res) => {
     const user = {
         email: req.body.email,
@@ -21,6 +27,12 @@ exports.create = (req, res) => {
         });
 };
 
+/**
+ * Returns a user's credit
+ * 
+ * @param {Request} req 
+ * @param {Response} res 
+ */
 exports.credit = (req, res) => {
     Users.findOne({
         where: {
@@ -28,22 +40,28 @@ exports.credit = (req, res) => {
         }
     }).then(data => {
         if (data) {
-            res.status(200).send({
+            return res.status(200).send({
                 credit: data.credit
             });
         } else {
-            res.status(404).send({
+            return res.status(404).send({
                 message: "Not found."
             })
         }  
     })
     .catch(err => {
-        res.status(500).send({
+        return res.status(500).send({
             message: err.message || "Internal server error."
         });
     });
 };
 
+/**
+ * Update a user's credit
+ * 
+ * @param {Request} req 
+ * @param {Response} res 
+ */
 exports.updateCredit = async (req, res) => {
     await Users.update(
         {
@@ -55,17 +73,17 @@ exports.updateCredit = async (req, res) => {
     ).then(data => {
         console.log(data)
         if (data[0] !== 0) {
-            res.status(200).send({
+            return res.status(200).send({
                 message: "Credit updated."
             });
         } else {
-            res.status(404).send({
+            return res.status(404).send({
                 message: "Not found."
             })
         }
     })
     .catch (err => {
-        res.status(500).send({
+        return res.status(500).send({
             message: err.message || "Internal server error."
         });
     });

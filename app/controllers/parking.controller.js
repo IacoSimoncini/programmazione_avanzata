@@ -12,10 +12,10 @@ exports.create = (req, res) => {
     };
     Parking.create(parking)
         .then(data => {
-            res.status(200).send(data);
+            return res.status(200).send(data);
         })
         .catch(err => {
-            res.status(500).send({
+            return res.status(500).send({
                 message: err.message || "Some error occurred while creating parking"
             });
         });
@@ -41,10 +41,10 @@ exports.parkingZone = async (req, res) => {
                     });
                 }
             });
-            res.status(200).send(listPark);
+            return res.status(200).send(listPark);
         })
         .catch(err => {
-            res.status(500).send({
+            return res.status(500).send({
                 message: err.message || "Internal server error."
             })
         });
