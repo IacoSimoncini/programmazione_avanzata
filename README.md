@@ -9,7 +9,7 @@ Realizzazione di un back-end tramite l'utilizzo di:
 L'obiettivo del progetto è la realizzazione di un sistema che consenta di gestire il noleggio di veicoli elettrici. In particolare si è realizzato il back-end per gestire chiamate GET e POST per:
 * Ottenere la lista dei veicoli disponibili (di 4 tipologie: Bicicletta, bicicletta elettrica, monopattino elettrico e tandem)
 * Effettuare il noleggio specificando l'id del veicolo scelto
-* Effettuare la chiusura (fine) del noleggio con fatturazione che considera: tempo trascorso, tariffa del noleggio e un fattore moltiplicativo se il veicolo non risulta entro un raggio di 50 metri
+* Effettuare la chiusura (fine) del noleggio con fatturazione che considera: tempo trascorso, tariffa del noleggio e un fattore moltiplicativo se il veicolo non risulta entro un raggio di 50 metri da un parcheggio
  * Restituire la lista delle aree di parcheggio
  * Restituire il credito residuo dell'utente
  * Resistituire l'elenco dei noleggi effettuati 
