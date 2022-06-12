@@ -25,6 +25,7 @@ Il diagramma dei casi d'uso rappresenta l'intero back-end. Al suo interno sono s
 * Veicoli
 * Noleggi
 * Parcheggi
+
 Ogni categoria ha associato un relativo file per le rotte e per i controller che gestiscono la logica dell'applicazione.
 
 #### Diagramma delle classi
