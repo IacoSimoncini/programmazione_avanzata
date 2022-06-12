@@ -46,6 +46,6 @@ Avviare il seed del database:
 ```bash
 docker exec ProgPa_Backend npm run seed
 ```
-Fine della fase di Avvio.
+Fine della fase di avvio.
 ## Test del progetto
 
