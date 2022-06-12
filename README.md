@@ -38,9 +38,12 @@ Nella cartella app eseguire:
 docker-compose up
 ```
 ### Start del backend
-Aprire un altro terminale e avviare il conteiner del backend tramite:
+Aprire un nuovo terminale e avviare il conteiner del backend tramite:
 ```bash
 docker start ProgPa_Backend
+```
+Avviare il seed del database:
+```bash
 docker exec ProgPa_Backend npm run seed
 ```
 Fine della fase di Avvio.
