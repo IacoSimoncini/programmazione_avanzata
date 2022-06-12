@@ -20,9 +20,9 @@ L'obiettivo del progetto è la realizzazione di un sistema che consenta di gesti
 ## Progettazione
 
 ## Avvio del progetto mediante docker-compose
-Per avviare il progetto correttamente sulla propria macchina è necessario seguire i seguenti step:
+Per avviare il progetto è necessario seguire i seguenti step:
 ### Clonare la repository:
-Aprire il terminale ed eseguire:
+Da terminale eseguire:
 
 ```bash
 git clone https://github.com/IacoSimoncini/programmazione_avanzata.git
