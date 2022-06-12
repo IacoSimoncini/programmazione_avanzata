@@ -36,7 +36,7 @@ exports.errorsVehicles = (req: express.Request, res: express.Response, next: exp
     const lat: number = req.body.lat;
     const long: number = req.body.long;
     if (typeof lat === "number" && typeof long === "number" && typeof id_vehicle === "number" && typeof type === "string") {
-        next();
+        return next();
     } else {
         return res.status(400).send({
             message: "Invalid type."

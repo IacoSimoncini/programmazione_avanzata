@@ -39,7 +39,7 @@ exports.errorsVehicles = (req, res, next) => {
     const lat = req.body.lat;
     const long = req.body.long;
     if (typeof lat === "number" && typeof long === "number" && typeof id_vehicle === "number" && typeof type === "string") {
-        next();
+        return next();
     }
     else {
         return res.status(400).send({

@@ -41,7 +41,7 @@ exports.checkHeader = (req, res, next) => {
 exports.checkUser = (req, res, next) => {
     const user = req.user;
     if (user.role != "admin") {
-        res.status(401).send({
+        return res.status(401).send({
             message: "Unauthorized."
         }); 
     } else {
@@ -67,20 +67,20 @@ exports.checkCredit = async (req, res, next) => {
     .then(user => {
         if (user){
             if (user.credit < 0) {
-                res.status(401).send({
+                return res.status(401).send({
                     message: "Unauthorized."
                 }); 
             } else {
-                next();
+                return next();
             }
         } else {
-            res.status(400).send({
+            return res.status(400).send({
                 message: "User not found."
             });
         }
     })
     .catch(err => {
-        res.status(500).send({
+        return res.status(500).send({
             message: err.message || "Internal server error."
         })
     });
@@ -100,9 +100,9 @@ exports.verifyToken = (req, res, next) => {
         const bearer = bearerHeader.split(' ');
         const bearerToken = bearer[1];
         req.token = bearerToken;
-        next()
+        return next()
     } else {
-        res.status(401).send({
+        return res.status(401).send({
             message: "Unauthorized."
         }); 
     }

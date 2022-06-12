@@ -25,6 +25,7 @@ exports.start = async (req, res) => {
         })
         return type; 
     }
+    console.log("********************************************")
     var list = [];
     const check = await Rental.findAll({
         where: {
@@ -38,6 +39,7 @@ exports.start = async (req, res) => {
             message: err.message || "Some error occurred"
         });
     });
+    console.log("********************************************")
     if (list.length != 0) {
         res.status(400).send({
             message: `${req.user.email} is already renting a vehicle.`
@@ -100,36 +102,61 @@ exports.stop = async (req, res) => {
     var id_vehicle = 0;
     var type = '';
     var start = 0;
-    const rent = await Rental.findOne({
-        where: {
-            email: req.user.email,
-            end: null
-        }
-    }).then(data => {
-        if (!data){
-            return res.status(400).send({
-                message: "Bad request."
+    console.log("PRIMA***************************************************")
+    try {
+        console.log("TRY***************************************************")
+        const rent = await Rental.findOne({
+            where: {
+                email: req.user.email,
+                end: null
+            }
+        }).then(data => {
+            console.log("FUORI IF ***************************************************")
+            if (!data){
+                console.log("IF***************************************************");
+                return res.status(400).send({
+                    message: "Bad request."
+                });
+            } else {
+                console.log("ELSE***************************************************");
+                id_vehicle = data.id_vehicle;
+                start = data.start;
+            }
+        }).catch(err => {
+            console.log("*1*");
+            return res.status(500).send({
+                message: err.message || "Internal server error."
             });
-        }
-        id_vehicle = data.id_vehicle;
-        start = data.start;
-    }).catch(err => {
+        });
+    } catch (error) {
+        console.log("*2*");
         return res.status(500).send({
             message: err.message || "Internal server error."
         });
-    });
+    }
+    
     var credit = 0;
-    await Users.findOne({
-        where: {
-            email: req.user.email
-        }
-    }).then(data => {
-        credit = data.credit;
-    }).catch(err => {
+    try {
+        const user = await Users.findOne({
+            where: {
+                email: req.user.email
+            }
+        }).then(data => {
+            credit = data.credit;
+        }).catch(err => {
+            console.log("*3*",req.user.email);
+            return res.status(500).send({
+                message: err.message || "Internal server error."
+            });
+        });
+    } catch (error) {
+        console.log("*4*",req.user.email);
         return res.status(500).send({
             message: err.message || "Internal server error."
         });
-    });
+    }
+        
+
     const vehicle = await Vehicles.findOne({
         where: {
             id_vehicle: id_vehicle
@@ -141,6 +168,7 @@ exports.stop = async (req, res) => {
             message: err.message || "Internal server error."
         });
     });
+
     let payment = 0;
     let end = Date.now();
     var time = utils.convert_time(start, end);
@@ -158,6 +186,7 @@ exports.stop = async (req, res) => {
                 message: err.message || "Internal server error."
             });
         });
+
     switch(type) {
         case 'bike':
             payment = Math.ceil((1 + (0.1 * time) * multiplier));
@@ -172,7 +201,8 @@ exports.stop = async (req, res) => {
             payment = Math.ceil((1 + (0.15 * time) * multiplier));
             break;
     }
-    await Rental.update({ 
+
+    const Rent = await Rental.update({ 
         end: end,
         payment: payment 
     },
@@ -186,8 +216,9 @@ exports.stop = async (req, res) => {
             message: err.message || "Internal server error."
         })
     });
+
     credit = credit - payment;
-    await Users.update({
+    const UserUpdate = await Users.update({
         credit: credit
     }, {
         where:{
@@ -198,7 +229,8 @@ exports.stop = async (req, res) => {
             message: err.message || "Internal server error."
         });
     });
-    await Vehicles.update({
+
+    const VehicleUpdate = await Vehicles.update({
         nol: true
     }, {
         where: {
@@ -209,6 +241,7 @@ exports.stop = async (req, res) => {
             message: err.message || "Internal server error."
         });
     })
+
     return res.status(200).send({
         message: credit
     });
