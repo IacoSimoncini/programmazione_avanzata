@@ -3,7 +3,7 @@ Realizzazione di un back-end tramite l'utilizzo di:
 * Node.JS
 * Express
 * Sequelize
-* Postgres
+* Postgres (DB)
 
 ## Obiettivo del progetto
 L'obiettivo del progetto è la realizzazione di un sistema che consenta di gestire il noleggio di veicoli elettrici. In particolare si è realizzato il back-end per gestire chiamate GET e POST per:
@@ -33,6 +33,7 @@ cd programmazione_avanzata
 cd app
 ```
 ### Avvio di docker-compose
+Nella cartella app eseguire: 
 ```bash
 docker-compose up
 ```
