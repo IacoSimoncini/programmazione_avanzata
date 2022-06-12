@@ -16,16 +16,18 @@ L'obiettivo del progetto è la realizzazione di un sistema che consenta di gesti
         
 ## Progettazione
 ### Diagrammi UML
-Diagramma dei casi d'uso
+#### Diagramma dei casi d'uso
+
 ![PA-Use-Case drawio](https://user-images.githubusercontent.com/86098337/173245766-d5b26740-869c-45ce-b0f6-842bca36f151.png)
 
-Nel diagramma è rappresentato l'intero back-end. Al suo interno sono stati raggruppati i casi d'uso in quattro categorie:
+Il diagramma dei casi d'uso rappresenta l'intero back-end. Al suo interno sono stati raggruppati i casi d'uso in quattro categorie:
 * Utenti
 * Veicoli
 * Noleggi
 * Parcheggi
 Ogni categoria ha associato un relativo file per le rotte e per i controller che gestiscono la logica dell'applicazione.
 
+#### Diagramma delle classi
 ## Avvio del progetto mediante docker-compose
 Per avviare il progetto è necessario seguire i seguenti step:
 ### Clonare la repository:
