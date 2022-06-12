@@ -1,19 +1,8 @@
-FROM node:14.2.0-slim
-
-WORKDIR /usr/src/app
-
-COPY package.json .
-
-COPY package-lock.json .
-
-RUN npm install
-RUN npm install -g db-migrate
-RUN db-migrate up initialize
-RUN npx sequelize-cli db:seed:all
+FROM node
+WORKDIR /app
 
 COPY . .
 
-EXPOSE 8080
+RUN npm install
 
-CMD ["npm", "run", "start"]
-
+CMD ["npm","start"]

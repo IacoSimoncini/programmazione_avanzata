@@ -6,7 +6,8 @@
     "seed": "npx sequelize-cli db:seed:all",
     "start": "node ./bin/www",
     "debug": "DEBUG=app:* npm start",
-    "migrate": "db-migrate up initialize",
+    "migrations":"db-migrate up initialize",
+    "migrate": "node ./migrations/20220610134126-initialize.js",
     "drop_table": "db-migrate down"
   },
   "dependencies": {
