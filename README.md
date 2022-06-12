@@ -44,5 +44,10 @@ Avviare il seed del database:
 docker exec ProgPa_Backend npm run seed
 ```
 Fine della fase di avvio.
+
 ## Test del progetto
 
+Per effettuare i test sul funzionamento dell'applicazione è possibile eseguire, tramite Postman, le chiamate GET e POST reperibili tramite il seguente link:
+https://www.getpostman.com/collections/a2d441399d8ff8a5a892
+Dall'app di Postman è necessario andare nell'ambiente "My Workspace" e clickare su import, andare nella sezione link e incollare l'url sopra scritto.
+Le varie richieste sono organizzate per tipologia e sono pronte all'uso.
