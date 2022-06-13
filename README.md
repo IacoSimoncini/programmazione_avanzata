@@ -27,13 +27,18 @@ Il diagramma dei casi d'uso rappresenta l'intero back-end. Al suo interno sono s
 * Noleggi
 * Parcheggi
 
-Ogni categoria ha associato un relativo file per le rotte e per i controller che gestiscono la logica dell'applicazione.
+Ogni categoria ha associato un file per le rotte e per i controller che gestiscono la logica dell'applicazione.
 
 #### Diagramma delle classi
 
 ![PA-ClassDiagram drawio (1)](https://user-images.githubusercontent.com/86098337/173373597-c8db4860-4334-4341-a294-8400f6f3dc98.png)
 
 Ogni classe è associata a una tabella. Le relazioni tra le classi presentano inoltre la cardinalità.
+Un utente semplice (non admin) può essere associato a un veicolo per volta, viceversa un veicolo specifico può essere associato al massimo a un utente per volta. L'utente può essere legato a un noleggio per volta, terminato un noleggio può avviarne un altro, di consequenza la cardinalità massima è N. Viceversa il singolo noleggio è univocamente associato a un utente specifico, tramite l'email. Vale lo stesso per la relazione veicolo noleggio.
+### Design Pattern
+Al fine di separare le varie funzionalità del back-end si è scelto di seguire il pattern MVC (Model View Controller). Per quanto riguarda il modello, esso gestisce i dati, la logica e le regole dell'applicazione. Il controller riceve i comandi, tramite le rotte, e reagisce eseguendo le operazioni desiderate. La View rappresenta i dati in output del sistema, che in questo progetto non è previsto, ma che è implementabile in futuro. I vantaggi che ci hanno spinto a scegliere il pattern MVC sono legate all'indipendenza delle varie componenti che permette di organizzare il lavoro, flessibilità dal database poichè è necessario modificare il modello, la possibilità di avere un controller separatamente rende possibile concentrarsi sulla logica del funzionamento.
+Nello specifico il modello gestisce le classi di utenti, veicoli, noleggi e parcheggi. I modelli sono scritti in TypeScript per garantire il legame stretto con il tipo di dato. Inoltre si è utlizzato il modulo sequelize per la gestione del database in Postgres.
+Per quanto riguarda il controller, anch'esso è gestito in quattro file relativi a utenti, veicoli, noleggi e parcheggi. Ogni file del controller presenta delle funzioni che prendono in input una request e restituiscono una response. In particolare il controller dell'utente ha funzioni per: creazione di un nuovo utente (create), restituzione del credito dell'utente (credit) e aggiornamento del credito (updateCredit). Quello relativo ai veicoli: creazione di un veicolo (create), lista dei veicoli disponibili (listAvailable), filtraggio dei veicoli (filterVehicles). Il noleggo: start del noleggio (start), stop del noleggio (stop) e restituzione dei noleggi effettuati (done). I parcheggi: creazione e restituzione delle aree di parcheggio.
 
 ## Avvio del progetto mediante docker-compose
 Per avviare il progetto è necessario seguire i seguenti step:
