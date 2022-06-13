@@ -33,7 +33,7 @@ Ogni categoria ha associato un relativo file per le rotte e per i controller che
 
 ![PA-ClassDiagram drawio (1)](https://user-images.githubusercontent.com/86098337/173373597-c8db4860-4334-4341-a294-8400f6f3dc98.png)
 
-
+Ogni classe è associata a una tabella. Le relazioni tra le classi presentano inoltre la cardinalità.
 
 ## Avvio del progetto mediante docker-compose
 Per avviare il progetto è necessario seguire i seguenti step:
