@@ -9,7 +9,7 @@ const utils = require('../utils/utils.js')
  * @param {Request} req 
  * @param {Response} res 
  */
-exports.create = (req, res) => {
+exports.create = async(req, res) => {
     const vehicle = {
         nol: true,
         type: req.body.type,
@@ -17,7 +17,7 @@ exports.create = (req, res) => {
         long: req.body.long,
         id_vehicle: req.body.id_vehicle
     };
-    Vehicles.create(vehicle)
+    await Vehicles.create(vehicle)
         .then(data => {
             return res.status(200).send(data);
         })

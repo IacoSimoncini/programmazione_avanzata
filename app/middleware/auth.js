@@ -58,7 +58,8 @@ exports.checkUser = (req, res, next) => {
  * @return {}
  */
 exports.checkCredit = async (req, res, next) => {
-    const user = req.user;
+    const c = req.user;
+    console.log(c)
     const User = await Users.findOne({
         where: {
             email: req.user.email

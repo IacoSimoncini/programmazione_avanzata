@@ -1,9 +1,9 @@
 module.exports = app => {
-    const userController = require("../controllers/user.controller.js");
+    const userMiddleware = require("../middleware/middlewareUser");
     const auth = require("../middleware/auth");
     var router = require("express").Router();
-    router.post("/", [auth.verifyToken, auth.checkHeader, auth.checkCredit], userController.create);
-    router.get("/credit", [auth.verifyToken, auth.checkHeader], userController.credit);
-    router.post("/updatecredit", [auth.verifyToken, auth.checkHeader, auth.checkUser], userController.updateCredit)
+    router.post("/", auth.verifyToken, auth.checkHeader, auth.checkCredit, userMiddleware.errorCreate);
+    router.get("/credit", auth.verifyToken, auth.checkHeader, userMiddleware.errorCredit);
+    router.post("/updatecredit", auth.verifyToken, auth.checkHeader, auth.checkUser, userMiddleware.errorUpdateCredit)
     app.use('/api/user', router);
 }
