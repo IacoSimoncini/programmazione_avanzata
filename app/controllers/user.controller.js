@@ -67,28 +67,34 @@ exports.credit = (req, res) => {
  * @param {Response} res The res object represents the HTTP response
  */
 exports.updateCredit = async (req, res) => {
-    await Users.update(
-        {
-            credit: req.body.credit
-        },
-        {
-            where: { email: req.body.email }
-        }
-    ).then(data => {
-        console.log(data)
-        if (data[0] !== 0) {
-            return res.status(200).send({
-                message: "Credit updated."
+    if (req.body.credit >= 0) {
+        await Users.update(
+            {
+                credit: req.body.credit
+            },
+            {
+                where: { email: req.body.email }
+            }
+        ).then(data => {
+            console.log(data)
+            if (data[0] !== 0) {
+                return res.status(200).send({
+                    message: "Credit updated."
+                });
+            } else {
+                return res.status(404).send({
+                    message: "Not found."
+                })
+            }
+        })
+        .catch (err => {
+            return res.status(500).send({
+                message: err.message || "Internal server error."
             });
-        } else {
-            return res.status(404).send({
-                message: "Not found."
-            })
-        }
-    })
-    .catch (err => {
-        return res.status(500).send({
-            message: err.message || "Internal server error."
         });
-    });
+    } else {
+        return res.status(500).send({
+            message: "Credit must be >= 0."
+        });
+    }
 }

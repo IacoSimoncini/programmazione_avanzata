@@ -43,7 +43,7 @@ exports.start = async (req, res) => {
             end: null
         }
     }).then(data => {
-        if(!data) {
+        if (data) {
             list = data;
         }
     }).catch(err => {

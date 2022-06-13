@@ -13,6 +13,14 @@ module.exports = {
         
       },
       {
+        id:'7c555711-7af4-4388-9d48-91d28598dfea',
+        credit:0.0,
+        email:'uers_credito_not_suff@gmail.com',
+        lat:43.617296, 
+        long:13.516360,
+        role:'user'
+      },
+      {
         id:'18f79503-9982-47cb-b6cf-4b6ae7163c50',
         credit:999.99,
         email:'user2@gmail.com',

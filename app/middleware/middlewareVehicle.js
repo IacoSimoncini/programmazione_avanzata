@@ -45,3 +45,13 @@ exports.errorFilterVehicles = async (req, res, next) => {
         next(e);
     }
 };
+
+exports.errorType = (req, res, next) => {
+    if (typeof req.query.lat === Number && typeof req.query.lat === Number){
+        next();
+    } else {
+        return res.status(400).send({
+            message: "Type of lat or long are not valid. "
+        });
+    }
+};
