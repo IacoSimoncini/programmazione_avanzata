@@ -18,7 +18,8 @@ L'obiettivo del progetto è la realizzazione di un sistema che consenta di gesti
 ### Diagrammi UML
 #### Diagramma dei casi d'uso
 
-![PA-Use-Case drawio](https://user-images.githubusercontent.com/86098337/173245766-d5b26740-869c-45ce-b0f6-842bca36f151.png)
+![PA-Use-Case drawio (1)](https://user-images.githubusercontent.com/86098337/173370724-9d58c25b-bd64-47ca-b231-27aefdb38671.png)
+
 
 Il diagramma dei casi d'uso rappresenta l'intero back-end. Al suo interno sono stati raggruppati i casi d'uso in quattro categorie:
 * Utenti
@@ -29,6 +30,11 @@ Il diagramma dei casi d'uso rappresenta l'intero back-end. Al suo interno sono s
 Ogni categoria ha associato un relativo file per le rotte e per i controller che gestiscono la logica dell'applicazione.
 
 #### Diagramma delle classi
+
+![PA-ClassDiagram drawio (1)](https://user-images.githubusercontent.com/86098337/173373597-c8db4860-4334-4341-a294-8400f6f3dc98.png)
+
+Ogni classe è associata a una tabella. Le relazioni tra le classi presentano inoltre la cardinalità.
+
 ## Avvio del progetto mediante docker-compose
 Per avviare il progetto è necessario seguire i seguenti step:
 ### Clonare la repository:
