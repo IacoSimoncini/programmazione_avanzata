@@ -19,7 +19,7 @@ exports.checkHeader = (req, res, next) => {
         }); 
     }
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);        // process.env.SECRET_KEY
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
         req.user = decoded;
     } catch (err) {
         return res.status(401).send({

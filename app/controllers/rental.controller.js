@@ -25,7 +25,6 @@ exports.start = async (req, res) => {
         })
         return type; 
     }
-    console.log("********************************************")
     var list = [];
     const check = await Rental.findAll({
         where: {
@@ -33,13 +32,14 @@ exports.start = async (req, res) => {
             end: null
         }
     }).then(data => {
-        list = data;
+        if(!data) {
+            list = data;
+        }
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred"
         });
     });
-    console.log("********************************************")
     if (list.length != 0) {
         res.status(400).send({
             message: `${req.user.email} is already renting a vehicle.`
@@ -102,23 +102,18 @@ exports.stop = async (req, res) => {
     var id_vehicle = 0;
     var type = '';
     var start = 0;
-    console.log("PRIMA***************************************************")
     try {
-        console.log("TRY***************************************************")
         const rent = await Rental.findOne({
             where: {
                 email: req.user.email,
                 end: null
             }
         }).then(data => {
-            console.log("FUORI IF ***************************************************")
             if (!data){
-                console.log("IF***************************************************");
                 return res.status(400).send({
                     message: "Bad request."
                 });
             } else {
-                console.log("ELSE***************************************************");
                 id_vehicle = data.id_vehicle;
                 start = data.start;
             }
