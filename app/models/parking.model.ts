@@ -10,6 +10,9 @@ interface ParkingAttributes {
   long: number;
 }
 
+/**
+ * Definition of the "Parking" table in the database.
+ */
 module.exports = (sequelize: any, Sequelize: any) => {
   class Parking extends Model<ParkingAttributes> 
   implements ParkingAttributes {

@@ -1,5 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Handles errors of variable types in parking functions.
+ *
+ * @param {Request} req The req object represents the HTTP request.
+ * @param {Response} res The res object represents the HTTP response.
+ * @param {next} next indicating the next middleware function.
+ */
 exports.errorsParking = (req, res, next) => {
     const lat = req.body.lat;
     const long = req.body.long;
@@ -33,6 +40,13 @@ exports.errorsParking = (req, res, next) => {
         });
     }
 };
+/**
+ * Handles errors of variable types in vehicles functions.
+ *
+ * @param {Request} req The req object represents the HTTP request.
+ * @param {Response} res The res object represents the HTTP response.
+ * @param {next} next indicating the next middleware function.
+ */
 exports.errorsVehicles = (req, res, next) => {
     const id_vehicle = req.body.id_vehicle;
     const type = req.body.type;

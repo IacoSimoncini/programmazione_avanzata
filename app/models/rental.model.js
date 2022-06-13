@@ -1,6 +1,9 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
+/**
+ * Definition of the "Rental" table in the database.
+ */
 module.exports = (sequelize, Sequelize) => {
     class Rental extends sequelize_1.Model {
     }

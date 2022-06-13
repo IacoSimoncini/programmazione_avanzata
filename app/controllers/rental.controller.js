@@ -1,3 +1,6 @@
+/**
+ * This module handles requests related to "rental" table in the database
+ */
 const db = require("../models");
 const utils = require('../utils/utils.js')
 const Rental = db.rental;
@@ -7,20 +10,28 @@ const Users = db.users;
 const Op = db.Sequelize.Op;
 
 /**
- * Start a rent
+ * Start a rent. This function performs the rental of a vehicle by a user. It does this by checking for any rent by the user. 
+ * If the check is successful, "rental" is created and it is verified that the vehicle is not already in use by another user. 
+ * Finally, the rental status of the vehicle is updated and the rental is created in the database.
  * 
- * @param {Request} req 
- * @param {Response} res 
+ * @param {Request} req The req object represents the HTTP request
+ * @param {Response} res The res object represents the HTTP response
  */
 exports.start = async (req, res) => {
     async function getTypeFromId(id_veicolo){
         var type = "";
         const vehicle= await Vehicles.findOne({
                 where: {
-                    id_vehicle: id_veicolo
+                    id_vehicle: id_veicolo,
+                    nol: true
                 }
             }
         ).then(data => {
+            if (data === undefined || data === null) {
+                return res.status(400).send({
+                    message: "Vehicle is already in use."
+                })
+            }
             type = data.type;
         })
         return type; 
@@ -58,7 +69,8 @@ exports.start = async (req, res) => {
         
         const vehicle = await Vehicles.findOne({
             where: {
-                id_vehicle: rental.id_vehicle
+                id_vehicle: rental.id_vehicle,
+                nol: true
             }
         });
         if (vehicle) {
@@ -93,10 +105,13 @@ exports.start = async (req, res) => {
 };
 
 /**
- * Stop a rent
+ * Stop a rent. 
+ * This function stops a user from renting a vehicle. First, it searches the database for the rental, 
+ * if the search is successful, it searches the user's database for the credit, if the credit is found in the database,
+ * it searches the vehicle using the vehicle id. Then the rental payment is calculated and the rental, user, and vehicle tables are updated.
  * 
- * @param {Request} req 
- * @param {Response} res 
+ * @param {Request} req The req object represents the HTTP request
+ * @param {Response} res The res object represents the HTTP response
  */
 exports.stop = async (req, res) => {
     var id_vehicle = 0;
@@ -118,13 +133,11 @@ exports.stop = async (req, res) => {
                 start = data.start;
             }
         }).catch(err => {
-            console.log("*1*");
             return res.status(500).send({
                 message: err.message || "Internal server error."
             });
         });
     } catch (error) {
-        console.log("*2*");
         return res.status(500).send({
             message: err.message || "Internal server error."
         });
@@ -139,13 +152,11 @@ exports.stop = async (req, res) => {
         }).then(data => {
             credit = data.credit;
         }).catch(err => {
-            console.log("*3*",req.user.email);
             return res.status(500).send({
                 message: err.message || "Internal server error."
             });
         });
     } catch (error) {
-        console.log("*4*",req.user.email);
         return res.status(500).send({
             message: err.message || "Internal server error."
         });
@@ -245,19 +256,20 @@ exports.stop = async (req, res) => {
 /**
  * Returns the list of rentals made by a specific user.
  * Returns a json constructed as follows:
- *      - Lista dei noleggi
- *      - Categoria
- *          - Costo minimo
- *          - Costo massimo
- *          - Costo medio
- *          - Durata minima
- *          - Durata massima
- *          - Durata media
- *      - Noleggi effettuati
- *      - Credito residuo
+ *      - Rent list 
+ *      - Type
+ *          - Minimum cost
+ *          - Maximum cost
+ *          - Mean cost
+ *          - Minimum time
+ *          - Maximum time
+ *          - Mean time
+ *      - Rentals made
+ *      - Residual credit
  * 
- * @param {Request} req 
- * @param {Response} res 
+ * @param {Request} req The req object represents the HTTP request
+ * @param {Response} res The res object represents the HTTP response
+ * @return {jsonResponse} jsonResponse 
  */
 exports.done = async (req, res) => {
     const user = await Users.findOne({

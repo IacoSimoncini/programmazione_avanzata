@@ -14,6 +14,9 @@ interface RentalAttributes {
   type_vehicle: string;
 }
 
+/**
+ * Definition of the "Rental" table in the database.
+ */
 module.exports = (sequelize: any, Sequelize: any) => {
   class Rental extends Model<RentalAttributes> 
   implements RentalAttributes {

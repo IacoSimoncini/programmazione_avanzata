@@ -1,8 +1,17 @@
+/**
+ * This module handles requests related to "parking" table in the database
+ */
 const db = require("../models");
 const Parking = db.parking;
 const Op = db.Sequelize.Op;
 const utils = require('../utils/utils.js')
 
+/**
+ * Create a parking in database.
+ * 
+ * @param {Request} req The req object represents the HTTP request
+ * @param {Response} res The res object represents the HTTP response
+ */
 exports.create = (req, res) => {
     const lat = req.body.lat;
     const long = req.body.long;
@@ -21,6 +30,13 @@ exports.create = (req, res) => {
         });
 };
 
+/**
+ * Return the list of all parkings near the user. 
+ * The user passes the latitude and longitude via the request body.
+ * 
+ * @param {Request} req The req object represents the HTTP request
+ * @param {Response} res The res object represents the HTTP response
+ */
 exports.parkingZone = async (req, res) => {
 
     const position = {

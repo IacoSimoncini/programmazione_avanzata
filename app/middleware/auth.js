@@ -1,14 +1,18 @@
+/**
+ * this module manages the authorization of requests made by the user.
+ */
 const jwt = require("jsonwebtoken");
 const db = require("../models");
 const Users = db.users;
 require('dotenv').config();
 
 /**
- * Authentication of the user making the request
+ * Authentication of the user making the request.
+ * Performs token decryption and in case of error returns "Invalid Token".
  * 
- * @param {Request} req 
- * @param {Response} res
- * @param {next} next
+ * @param {Request} req The req object represents the HTTP request.
+ * @param {Response} res The res object represents the HTTP response.
+ * @param {next} next Indicating the next middleware function.
  * @return {}
  */
 exports.checkHeader = (req, res, next) => {
@@ -31,12 +35,12 @@ exports.checkHeader = (req, res, next) => {
 };
 
 /**
- * User role verification
+ * User role verification. 
+ * Check if the user's role is "admin" type, if yes return next, otherwise return "Unauthorized".
  * 
- * @param {Request} req 
- * @param {Response} res
- * @param {next} next
- * @return {}
+ * @param {Request} req The req object represents the HTTP request.
+ * @param {Response} res The res object represents the HTTP response.
+ * @param {next} next Indicating the next middleware function.
  */
 exports.checkUser = (req, res, next) => {
     const user = req.user;
@@ -50,12 +54,13 @@ exports.checkUser = (req, res, next) => {
 };
 
 /**
- * User credit verification
+ * User credit verification. 
+ * If the user does not have sufficient credit it returns "Unauthorized" as a response.
+ * If the user is not found within the database it returns "User not found" as a response.
  * 
- * @param {Request} req 
- * @param {Response} res
- * @param {next} next
- * @return {}
+ * @param {Request} req The req object represents the HTTP request.
+ * @param {Response} res The res object represents the HTTP response.
+ * @param {next} next Indicating the next middleware function.
  */
 exports.checkCredit = async (req, res, next) => {
     const c = req.user;
@@ -88,12 +93,13 @@ exports.checkCredit = async (req, res, next) => {
 }
 
 /**
- * Verify the bearer in the header of the request
+ * Verify the bearer in the header of the request. 
+ * If the token is not spelled correctly it generates an error
+ * and returns "Unauthorized" as a response.
  * 
- * @param {Request} req 
- * @param {Response} res
- * @param {next} next
- * @return {}
+ * @param {Request} req The req object represents the HTTP request.
+ * @param {Response} res The res object represents the HTTP response.
+ * @param {next} next Indicating the next middleware function.
  */
 exports.verifyToken = (req, res, next) => {
     const bearerHeader = req.headers.authorization;

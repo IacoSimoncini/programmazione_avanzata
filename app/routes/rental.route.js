@@ -1,3 +1,6 @@
+/**
+ * Rental routes
+ */
 module.exports = app => {
     const auth = require("../middleware/auth");
     const rentMiddleware = require("../middleware/middlewareRent");

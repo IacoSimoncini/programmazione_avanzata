@@ -1,12 +1,15 @@
+/**
+ * This module handles requests related to "users" table in the database
+ */
 const db = require("../models");
 const Users = db.users;
 const Op = db.Sequelize.Op;
 
 /**
- * Create user in database
+ * Create user in database.
  * 
- * @param {Request} req 
- * @param {Response} res 
+ * @param {Request} req The req object represents the HTTP request
+ * @param {Response} res The res object represents the HTTP response
  */
 exports.create = (req, res) => {
     const user = {
@@ -28,10 +31,10 @@ exports.create = (req, res) => {
 };
 
 /**
- * Returns a user's credit
+ * Returns a user's credit. 
  * 
- * @param {Request} req 
- * @param {Response} res 
+ * @param {Request} req The req object represents the HTTP request
+ * @param {Response} res The res object represents the HTTP response
  */
 exports.credit = (req, res) => {
     Users.findOne({
@@ -57,10 +60,11 @@ exports.credit = (req, res) => {
 };
 
 /**
- * Update a user's credit
+ * Update a user's credit. If there are no errors the user's credit is updated 
+ * otherwise the message "Not found" is returned.
  * 
- * @param {Request} req 
- * @param {Response} res 
+ * @param {Request} req The req object represents the HTTP request
+ * @param {Response} res The res object represents the HTTP response
  */
 exports.updateCredit = async (req, res) => {
     await Users.update(

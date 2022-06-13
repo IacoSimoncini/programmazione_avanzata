@@ -1,13 +1,16 @@
+/**
+ * This module handles requests related to "vehicle" table in the database
+ */
 const db = require("../models");
 const Vehicles = db.vehicles;
 const Op = db.Sequelize.Op;
 const utils = require('../utils/utils.js')
 
 /**
- * Create vehicle in database
+ * Create vehicle in database.
  * 
- * @param {Request} req 
- * @param {Response} res 
+ * @param {Request} req The req object represents the HTTP request
+ * @param {Response} res The res object represents the HTTP response
  */
 exports.create = async(req, res) => {
     const vehicle = {
@@ -29,16 +32,15 @@ exports.create = async(req, res) => {
 };
 
 /**
- * Creates the list of vehicles available for rental
+ * Creates the list of vehicles available for rental.
  * 
- * @param {Request} req 
- * @param {Response} res 
+ * @param {Request} req The req object represents the HTTP request
+ * @param {Response} res The res object represents the HTTP response
  */
 exports.listAvailable = async (req, res) => {
     const vehicles = await Vehicles.findAll({
         where: {
-                nol: true,
-                type: req.params.type,
+                nol: true
             }
         })
         .then(data => {
@@ -52,10 +54,10 @@ exports.listAvailable = async (req, res) => {
 };
 
 /**
- * List of vehicles available by type and distance from the user's position
+ * List of vehicles available by type and distance from the user's position.
  * 
- * @param {Request} req 
- * @param {Response} res 
+ * @param {Request} req The req object represents the HTTP request
+ * @param {Response} res The res object represents the HTTP response
  */
 exports.filterVehicles = async(req, res) => {
     var vehicles = [];

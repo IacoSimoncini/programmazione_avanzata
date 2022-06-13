@@ -13,6 +13,9 @@ interface UserAttributes {
   role: string;
 }
 
+/**
+ * Definition of the "User" table in the database.
+ */
 module.exports = (sequelize: any, Sequelize: any) => {
   class User extends Model<UserAttributes> 
   implements UserAttributes {

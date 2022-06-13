@@ -1,5 +1,15 @@
+/**
+ * this middleware module handles any type-related errors for specific functions.
+ */
 import * as express from 'express';
 
+/**
+ * Handles errors of variable types in parking functions.
+ * 
+ * @param {Request} req The req object represents the HTTP request.
+ * @param {Response} res The res object represents the HTTP response.
+ * @param {next} next indicating the next middleware function.
+ */
 exports.errorsParking = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const lat: number = req.body.lat;
     const long: number = req.body.long;
@@ -30,6 +40,13 @@ exports.errorsParking = (req: express.Request, res: express.Response, next: expr
     }
 };
 
+/**
+ * Handles errors of variable types in vehicles functions. 
+ * 
+ * @param {Request} req The req object represents the HTTP request.
+ * @param {Response} res The res object represents the HTTP response.
+ * @param {next} next indicating the next middleware function.
+ */
 exports.errorsVehicles = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const id_vehicle: number = req.body.id_vehicle;
     const type: string = req.body.type;

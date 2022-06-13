@@ -13,6 +13,9 @@ interface VehicleAttributes {
   nol: boolean;
 }
 
+/**
+ * Definition of the "Vehicles" table in the database.
+ */
 module.exports = (sequelize: any, Sequelize: any) => {
   class Vehicle extends Model<VehicleAttributes> 
   implements VehicleAttributes {
