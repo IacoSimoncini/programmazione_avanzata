@@ -31,7 +31,8 @@ Ogni categoria ha associato un relativo file per le rotte e per i controller che
 
 #### Diagramma delle classi
 
-![PA-ClassDiagram drawio](https://user-images.githubusercontent.com/86098337/173370368-b1bfeb82-fa83-4a95-866e-fef0bfb2a081.png)
+![PA-ClassDiagram drawio (1)](https://user-images.githubusercontent.com/86098337/173373597-c8db4860-4334-4341-a294-8400f6f3dc98.png)
+
 
 
 ## Avvio del progetto mediante docker-compose
