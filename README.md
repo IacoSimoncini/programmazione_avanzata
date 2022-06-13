@@ -80,6 +80,8 @@ Le varie richieste sono organizzate per tipologia, basta selezionarne una e prem
 Una volta importate le rotte è possibile testarle con Postman, inoltre il token jwt è già presente nell'header. 
 
 In caso servissero i token JWT generati sono i seguenti:
+
+
 Utente 1: 
 ```bash
 Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJQcm9nUGEiLCJpYXQiOjE2NTQ4NzI0NTksImV4cCI6MTY4NjQwODQ2MSwiYXVkIjoid3d3LnByb2dwYS5jb20iLCJzdWIiOiJ1c2VyMUBnbWFpbC5jb20iLCJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIn0.8ImqkqNGaLxpzbzlVwGbapV8WOyGiYg4iqFvVfQwicc
@@ -105,3 +107,45 @@ User credito minore di 0:
 Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJQcm9nUGEiLCJpYXQiOjE2NTQ4NzI0NTksImV4cCI6MTY1NDg3MjQ2MCwiYXVkIjoid3d3LnByb2dwYS5jb20iLCJzdWIiOiJ1ZXJzX2NyZWRpdG9fbm90X3N1ZmZAZ21haWwuY29tIiwiZW1haWwiOiJ1ZXJzX2NyZWRpdG9fbm90X3N1ZmZAZ21haWwuY29tIiwicm9sZSI6InVzZXIifQ.ZHEzZ-JO29D_TqR_ME2Xub1cyaPaEHC0qqV-ZrJlMws
 ```
 ### Esempi di test effettuati
+#### Creazione user 
+![CreateUser](https://user-images.githubusercontent.com/86098337/173400396-e76b250c-c70b-4ade-a03c-9dd3aaa30dd5.PNG)
+#### Creazione parcheggio
+![creazione_parcheggio](https://user-images.githubusercontent.com/86098337/173400486-80c8ff3f-8f38-4d07-8ab3-d02b03ce5547.PNG)
+#### Creazione veicolo
+![creazione_veicolo](https://user-images.githubusercontent.com/86098337/173400546-74e23d20-bce7-4a39-bd40-409a24a848bd.PNG)
+#### Noleggi effettuati
+![done_rent](https://user-images.githubusercontent.com/86098337/173400586-c991ce42-0047-42c4-a2ee-122a28724632.PNG)
+#### Restituzione credito utenti
+![get_credit](https://user-images.githubusercontent.com/86098337/173401220-091b2a75-ff0d-4f36-ab94-38d658db93c1.PNG)
+#### Lista dei parcheggi
+![lista_parcheggi](https://user-images.githubusercontent.com/86098337/173401608-062ce982-af86-4115-8e56-fff8a8ecf84f.PNG)
+#### Lista dei veicoli disponibili
+![listAvailable_veicoli](https://user-images.githubusercontent.com/86098337/173401698-f852f3ab-14e5-4f72-9a18-23e541d0ea42.PNG)
+#### Start noleggio
+![start_rent](https://user-images.githubusercontent.com/86098337/173401857-bcb9ab7c-7a75-470c-839a-2df7b8129806.PNG)
+#### Stop noleggio
+![stop_rent](https://user-images.githubusercontent.com/86098337/173401901-f4855e51-d2dc-4aec-92b5-65f0c2b119e8.PNG)
+#### Aggiornamento del credito 
+![update_credit](https://user-images.githubusercontent.com/86098337/173401956-38469d03-de09-4198-80d0-dbd6c8290af9.PNG)
+
+
+### Eccezioni 
+
+#### Errore creazione utente con stessa mail
+![errore_creazione_utente_con_stessa_mail](https://user-images.githubusercontent.com/86098337/173400688-6d1edb4f-be88-4885-9ae8-83609a76c45e.PNG)
+#### Errore creazione utente parametro vuoto
+![errore_creazione_utente_parametro_vuoto](https://user-images.githubusercontent.com/86098337/173400749-d8551f4e-2e71-4073-b077-7c28d866b456.PNG)
+#### Errore latitudine longitudine in filtraggio veicoli
+![errore_lat_long_filtro_Veicoli](https://user-images.githubusercontent.com/86098337/173400847-d6a4ce38-5d0c-409a-850c-e2b714207d9a.PNG)
+#### Errore mancanza parametro su aggiornamento del credito di un utente
+![errore_senza_parametro_update_credit](https://user-images.githubusercontent.com/86098337/173401094-f407fc7a-60df-4c36-ae1b-11479a8a6a4d.PNG)
+#### Noleggio di un utente che già dispone di un noleggio attivo
+![rent_utente_già_renting](https://user-images.githubusercontent.com/86098337/173401809-daeb2d49-c7f3-4499-af90-bc5678acb9a4.PNG)
+#### Creazione veicolo di con tipo invalido
+![invalid_type_creazione_veicolo](https://user-images.githubusercontent.com/86098337/173401550-bc392bda-93e9-4bcf-b19f-f19ad9652e7d.PNG)
+#### Restituzione credito utente expired
+![get_credit_utente_expired](https://user-images.githubusercontent.com/86098337/173401281-ad49e200-851b-448f-bb86-d45352920d8d.PNG)
+#### User con token errato
+![get_user_token_errato](https://user-images.githubusercontent.com/86098337/173401393-b433b663-66ac-4175-ab32-c55072adfcaa.PNG)
+#### Filtraggio veicoli errore del type
+![filtro_veicoli_errore_type](https://user-images.githubusercontent.com/86098337/173401176-fa83055a-0c3b-4f36-afda-bd9563d6ef93.PNG)
