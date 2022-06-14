@@ -76,12 +76,10 @@ Fine della fase di avvio.
 Per effettuare i test sul funzionamento dell'applicazione è possibile eseguire, tramite Postman, le chiamate GET e POST reperibili tramite il seguente link:
 https://www.getpostman.com/collections/a2d441399d8ff8a5a892
 
-Dall'app di Postman è necessario andare nell'ambiente "My Workspace" e clickare su import, andare nella sezione "link" e incollare l'url sopra scritto.
-Le varie richieste sono organizzate per tipologia, basta selezionarne una e premere "Send".
+Dall'app di Postman è necessario andare nell'ambiente "My Workspace" e cliccare su import, andare nella sezione "link" e incollare l'url sopra scritto.
+Le varie richieste sono organizzate per tipologia, basta selezionarne una e premere "Send" (il token JWT è già presente nell'header). 
 
-Una volta importate le rotte è possibile testarle con Postman, inoltre il token jwt è già presente nell'header. 
-
-In caso servissero i token JWT generati sono i seguenti:
+I token JWT utilizzati sono i seguenti:
 
 
 Utente 1: 
