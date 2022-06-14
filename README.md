@@ -40,7 +40,7 @@ Al fine di separare le varie funzionalità del back-end si è scelto di seguire 
 Nello specifico il modello gestisce le classi di utenti, veicoli, noleggi e parcheggi. I modelli sono scritti in TypeScript per garantire il legame stretto con il tipo di dato. Inoltre si è utlizzato il modulo sequelize per la gestione del database in Postgres.
 Per quanto riguarda il controller, anch'esso è gestito in quattro file relativi a utenti, veicoli, noleggi e parcheggi. Ogni file del controller presenta delle funzioni che prendono in input una request e restituiscono una response. In particolare il controller dell'utente ha funzioni per: creazione di un nuovo utente (create), restituzione del credito dell'utente (credit) e aggiornamento del credito (updateCredit). Quello relativo ai veicoli: creazione di un veicolo (create), lista dei veicoli disponibili (listAvailable), filtraggio dei veicoli (filterVehicles). Il noleggo: start del noleggio (start), stop del noleggio (stop) e restituzione dei noleggi effettuati (done). I parcheggi: creazione e restituzione delle aree di parcheggio.
 
-Sono state utilizzate le funzionalità di middleware per la gestione dell'autenticazione mediante token JWT, gestione di eventuali errori relativi alle rotte.
+Sono state utilizzate le funzionalità di middleware per la gestione dell'autenticazione mediante token JWT e per la gestione di eventuali errori relativi alle rotte.
 
 ## Avvio del progetto mediante docker-compose
 Per avviare il progetto è necessario seguire i seguenti step:
