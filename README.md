@@ -39,7 +39,8 @@ Un utente semplice (non admin) può essere associato a un veicolo per volta, vic
 #### Diagramma delle sequenze
 
 
-![PA-Diagramma Sequenze drawio](https://user-images.githubusercontent.com/86098337/173559268-c1629550-9271-4ba9-bc15-cf7e7c85a61c.png)
+![PA-Diagramma Sequenze drawio (1)](https://user-images.githubusercontent.com/86098337/173559478-d5d62af7-7cf7-45d6-a3fb-44ee20dfa4cc.png)
+
 
 
 ### Design Pattern
