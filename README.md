@@ -35,6 +35,13 @@ Ogni categoria ha associato un file per le rotte e per i controller che gestisco
 
 Ogni classe è associata a una tabella. Le relazioni tra le classi presentano inoltre la cardinalità.
 Un utente semplice (non admin) può essere associato a un veicolo per volta, viceversa un veicolo specifico può essere associato al massimo a un utente per volta. L'utente può essere legato a un noleggio per volta, terminato un noleggio può avviarne un altro, di consequenza la cardinalità massima è N. Viceversa il singolo noleggio è univocamente associato a un utente specifico, tramite l'email. Vale lo stesso per la relazione veicolo noleggio.
+
+#### Diagramma delle sequenze
+
+
+![PA-Diagramma Sequenze drawio](https://user-images.githubusercontent.com/86098337/173559268-c1629550-9271-4ba9-bc15-cf7e7c85a61c.png)
+
+
 ### Design Pattern
 Al fine di separare le varie funzionalità del back-end si è scelto di seguire il pattern MVC (Model View Controller). Per quanto riguarda il modello, esso gestisce i dati, la logica e le regole dell'applicazione. Il controller riceve i comandi, tramite le rotte, e reagisce eseguendo le operazioni desiderate. La View rappresenta i dati in output del sistema, che in questo progetto non è previsto, ma che è implementabile in futuro. I vantaggi che ci hanno spinto a scegliere il pattern MVC sono legate all'indipendenza delle varie componenti che permette di organizzare il lavoro, flessibilità dal database in caso sia necessario modificare il modello, la possibilità di avere un controller separatamente rende possibile concentrarsi sulla logica del funzionamento.
 Nello specifico il modello gestisce le classi di utenti, veicoli, noleggi e parcheggi. I modelli sono scritti in TypeScript per garantire il legame stretto con il tipo di dato. Inoltre si è utlizzato il modulo sequelize per la gestione del database in Postgres.
