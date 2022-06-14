@@ -10,7 +10,7 @@ module.exports = app => {
     var router = require("express").Router();
 
     router.post("/", auth.verifyToken, auth.checkHeader, auth.checkUser, errorsHandler.errorsVehicles, vehicleMiddleware.errorCreate);
-    router.get("/available", vehicleMiddleware.errorListAvailable);
+    router.get("/available", auth.verifyToken, auth.checkHeader, auth.checkCredit, vehicleMiddleware.errorListAvailable);
     router.post("/filter", auth.verifyToken, auth.checkHeader, auth.checkCredit, vehicleMiddleware.errorType, vehicleMiddleware.errorFilterVehicles);
     app.use('/api/vehicle', router); 
 }
